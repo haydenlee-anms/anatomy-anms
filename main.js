@@ -37,6 +37,8 @@ const MAT = {
   '관절·인대': new THREE.MeshStandardMaterial({ color: 0xcfc6a8, roughness: 0.6, side: THREE.DoubleSide }),
   '신경':      new THREE.MeshStandardMaterial({ color: 0xe0d24a, roughness: 0.5, side: THREE.DoubleSide }),
   '부착부':    new THREE.MeshStandardMaterial({ color: 0x6fa8c7, roughness: 0.6, side: THREE.DoubleSide }),
+  origin:      new THREE.MeshStandardMaterial({ color: 0x4a9de0, roughness: 0.6, side: THREE.DoubleSide }),  // 이는 곳
+  insertion:   new THREE.MeshStandardMaterial({ color: 0x4ad08a, roughness: 0.6, side: THREE.DoubleSide }),  // 닿는 곳
   pick:        new THREE.MeshStandardMaterial({ color: 0xffd24a, roughness: 0.5, emissive: 0x553300, side: THREE.DoubleSide }),
 };
 const matOf = (i) => MAT[i?.종류] || MAT['근육'];
@@ -119,18 +121,78 @@ async function ensureRegion(r) {
   }
 }
 
+// --- 하나씩 뜯어보기 ----------------------------------------------------
+// 벗겨내기: 누른 구조를 숨긴다. 계속 누르면 겉에서부터 한 겹씩 벗겨진다
+// 이것만 보기: 그 구조만 남기고 나머지를 숨긴다
+const peeled = [];        // 벗겨낸 순서대로. 되돌리기에 쓴다
+let soloIds = null;       // null 이면 평소대로, Set 이면 그것만 보임
+
+function updatePeelRow() {
+  const n = peeled.length + (soloIds ? 1 : 0);
+  $('peelRow').hidden = n === 0;
+  $('peelOut').textContent = soloIds ? '이것만' : `${peeled.length}개`;
+}
+
 // --- 보이기 규칙 --------------------------------------------------------
-// 부위가 켜져 있고, 계통이 켜져 있고, 층 슬라이더보다 얕아야 보인다
+// 부위가 켜져 있고, 계통이 켜져 있고, 층 슬라이더보다 얕아야 보인다.
+// 벗겨낸 것은 무조건 숨기고, '이것만 보기' 중이면 그것만 보인다.
+// 근육을 고르면 그 근육의 부착부는 계통 토글과 상관없이 같이 보여준다.
 function applyVisibility() {
   const v = +$('layer').value;
+  const peelSet = new Set(peeled);
+  const linked = linkedAttachmentIds();
   for (const p of parts) {
-    p.mesh.visible = onRegions.has(p.region)
-      && onSystems.has(p.info?.종류)
-      && (p.info?.depth ?? 2) <= v;
+    const id = p.mesh.userData.id;
+    let vis;
+    if (peelSet.has(id)) vis = false;
+    else if (soloIds) vis = soloIds.has(id);
+    else if (linked.has(id)) vis = onRegions.has(p.region);
+    else vis = onRegions.has(p.region) && onSystems.has(p.info?.종류) && (p.info?.depth ?? 2) <= v;
+    p.mesh.visible = vis;
+    // 선택한 근육의 부착부는 이는 곳/닿는 곳을 색으로 구분해준다
+    if (p !== selected) {
+      p.mesh.material = linked.has(id)
+        ? (p.info?.부착구분 === '이는곳' ? MAT.origin : MAT.insertion)
+        : matOf(p.info);
+    }
   }
   $('layerOut').textContent = LAYER_LABEL[v];
+  updatePeelRow();
 }
 $('layer').addEventListener('input', applyVisibility);
+
+// 선택한 근육과 이름이 같은 부착부 표시들을 찾는다.
+// Z-Anatomy가 'Gluteus maximus muscle.ol' 처럼 근육 이름 그대로 붙여놔서 이름으로 이어진다.
+function linkedAttachmentIds() {
+  const s = selected?.info;
+  if (!s || s.종류 !== '근육') return new Set();
+  const out = new Set();
+  for (const [id, m] of byMesh) if (m.부착구분 && m.영문명 === s.영문명) out.add(id);
+  return out;
+}
+
+$('peelBtn').addEventListener('click', () => {
+  if (!selected) return;
+  peeled.push(selected.mesh.userData.id);
+  const next = selected;
+  select(null);
+  applyVisibility();
+  void next;
+});
+$('soloBtn').addEventListener('click', () => {
+  if (!selected) return;
+  const id = selected.mesh.userData.id;
+  if (soloIds && soloIds.has(id)) soloIds = null;                 // 다시 누르면 해제
+  else soloIds = new Set([id, ...linkedAttachmentIds()]);
+  $('soloBtn').textContent = soloIds ? '전체로 돌아가기' : '이것만 보기';
+  applyVisibility();
+});
+$('undoPeel').addEventListener('click', () => { peeled.pop(); applyVisibility(); });
+$('resetPeel').addEventListener('click', () => {
+  peeled.length = 0; soloIds = null;
+  $('soloBtn').textContent = '이것만 보기';
+  applyVisibility();
+});
 
 function syncButtons() {
   for (const b of document.querySelectorAll('#regions button'))
@@ -222,9 +284,16 @@ function select(part) {
   }
   html += `<div class="warn">⚠ <b>층(depth)은 계통 기준 일괄 배정</b>입니다.
            근육 하나하나의 깊이를 확인한 값이 아닙니다.</div>`;
+  // 이 근육의 부착부가 몇 개 켜졌는지 알려준다
+  const nLinked = linkedAttachmentIds().size;
+  if (nLinked) html += `<dt>부착부</dt><dd>이 근육의 부착부 ${nLinked}곳을 같이 켰습니다.
+    <span style="color:#4a9de0">파란색 = 이는 곳</span>,
+    <span style="color:#4ad08a">초록색 = 닿는 곳</span></dd>`;
   html += notesHtml(part.mesh.userData.id);
+  $('soloBtn').textContent = (soloIds && soloIds.has(part.mesh.userData.id)) ? '전체로 돌아가기' : '이것만 보기';
   $('iBody').innerHTML = html;
   $('info').hidden = false;
+  applyVisibility();   // 선택한 근육의 부착부를 같이 켜준다
 }
 
 // 이 구조를 가리키는 site 를 찾아 관찰 기록을 날짜 역순으로 보여준다. 쓰기 기능은 없다.
@@ -264,11 +333,12 @@ $('q').addEventListener('input', () => {
   const q = $('q').value.trim().toLowerCase();
   const hits = $('hits');
   if (!q) { hits.hidden = true; hits.innerHTML = ''; return; }
-  const found = [];
-  for (const s of byMesh.values()) {
-    if (`${s.한글명 || ''} ${s.영문명} ${s.라틴명 || ''}`.toLowerCase().includes(q)) found.push(s);
-    if (found.length >= 14) break;
-  }
+  // 부착부 표시가 근육 본체보다 먼저 나오면 찾기 어렵다. 본체를 앞으로 보낸다.
+  const all = [];
+  for (const s of byMesh.values())
+    if (`${s.한글명 || ''} ${s.영문명} ${s.라틴명 || ''}`.toLowerCase().includes(q)) all.push(s);
+  all.sort((a, b) => (a.부착구분 ? 1 : 0) - (b.부착구분 ? 1 : 0));
+  const found = all.slice(0, 14);
   hits.innerHTML = found.length
     ? found.map((s, i) => `<div data-i="${i}">${esc(label(s, s.meshName))}
         <div class="sub">${esc(s.영문명)} · ${esc(REGION_LABEL[s.부위] || s.부위)}</div></div>`).join('')

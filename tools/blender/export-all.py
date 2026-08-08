@@ -9,7 +9,7 @@
 # 법선은 넣지 않는다. 용량의 33%를 차지하는데 브라우저가 로드할 때 계산하면 된다.
 #
 # 실행: blender --background Startup.blend --python export-all.py -- <출력폴더> <감면비율>
-import bpy, sys, os, json, struct, mathutils
+import bpy, sys, os, re, json, struct, mathutils
 
 argv = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
 OUT = argv[0] if argv else '/workspace/za_full'
@@ -22,8 +22,15 @@ SYSTEMS = {
     '2: Muscular insertions': '부착부',
     '3: Joints': '관절·인대',
     '4: Muscular system': '근육',
-    '7: Nervous system & Sense organs': '신경',
 }
+# 신경에 대해 확인한 것 (2026-08-08):
+#  · '7: Nervous system & Sense organs' 안은 전부 뇌와 감각기관이다. 재활에 안 쓴다
+#  · Bonus collection 의 'Peripheral nervous system' 은 이름과 달리 근육 목록이다
+#    (신경 지배 기준으로 근육을 묶어둔 것으로 보임). 여기 넣으면 근육이 신경으로 잘못 분류된다
+#  · 이름에 nerve/plexus 가 든 메쉬 62개 중 형체가 있는 건 27개뿐이고,
+#    전부 뇌·뇌신경핵·달팽이신경이다. 좌골신경·대퇴신경·요신경총은 형체가 아예 없다
+# → 뇌는 빼고, 재활에 쓰는 척수·척수신경절만 이름으로 골라 넣는다.
+SPINAL = re.compile(r'^(spinal cord|spinal ganglion|cauda equina|filum terminale|conus medullaris)', re.I)
 # 부위를 뷰어에서 다룰 묶음으로 합친다
 GROUP = {
     'Head': 'head', 'Neck': 'head',
@@ -65,6 +72,14 @@ for cname, label in SYSTEMS.items():
     c = bpy.data.collections.get(cname)
     if c:
         for n in leaves(c): sys_of[n] = label
+
+# 척수·척수신경절만 이름으로 골라 넣는다 (위 주석 참조)
+spinal_n = 0
+for o in bpy.data.objects:
+    if o.type == 'MESH' and SPINAL.match(o.name) and len(o.data.polygons) > 0:
+        sys_of[o.name] = '신경'
+        spinal_n += 1
+print(f'SPINAL 척수 계열 {spinal_n}개')
 
 # 메쉬 → 부위
 region_of = {}

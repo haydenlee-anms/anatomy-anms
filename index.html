@@ -66,6 +66,10 @@
     <button class="close" id="infoClose" aria-label="닫기">×</button>
     <h2 id="iName"></h2>
     <div class="latin" id="iLatin"></div>
+    <div class="btns" style="margin:8px 0">
+      <button id="soloBtn">이것만 보기</button>
+      <button id="peelBtn">벗겨내기</button>
+    </div>
     <dl id="iBody"></dl>
   </div>
 
@@ -85,7 +89,7 @@
         <button data-s="뼈" aria-pressed="true">뼈</button>
         <button data-s="근육" aria-pressed="true">근육</button>
         <button data-s="관절·인대" aria-pressed="true">인대</button>
-        <button data-s="신경">신경</button>
+        <button data-s="신경">척수</button>
         <button data-s="부착부">부착부</button>
       </div>
     </div>
@@ -93,6 +97,14 @@
       <label for="layer">층</label>
       <input id="layer" type="range" min="0" max="3" step="1" value="3">
       <output id="layerOut"></output>
+    </div>
+    <div class="row" id="peelRow" hidden>
+      <label>벗김</label>
+      <div class="btns">
+        <button id="undoPeel">마지막 하나 되돌리기</button>
+        <button id="resetPeel">전부 되돌리기</button>
+      </div>
+      <output id="peelOut"></output>
     </div>
     <div class="row">
       <label>단면</label>

@@ -1,0 +1,216 @@
+// 한글명 사전 보강. tools/ko-names.json 에 합친다.
+//
+// 전부 Claude가 적은 것이라 `추정` 이다. 표준 해부학 용어를 쓰되,
+// 임상에서 흔히 쓰는 한자어를 우선했다 (예: 큰볼기근이 아니라 대둔근).
+// 확신이 없는 것은 넣지 않았다. 지어내면 사용자가 틀린 걸 못 잡아낸다.
+import fs from 'node:fs';
+
+const ADD = {
+  // ── 머리·목 뼈 ──────────────────────────────────────────────
+  'frontal bone': '전두골', 'parietal bone': '두정골', 'occipital bone': '후두골',
+  'temporal bone': '측두골', 'sphenoid bone': '접형골', 'ethmoid bone': '사골',
+  'nasal bone': '비골(코뼈)', 'lacrimal bone': '누골', 'zygomatic bone': '관골(광대뼈)',
+  'maxilla': '상악골', 'mandible': '하악골', 'vomer': '서골', 'palatine bone': '구개골',
+  'inferior nasal concha bone': '하비갑개', 'hyoid bone': '설골',
+  'cricoid cartilage': '윤상연골', 'thyroid cartilage': '갑상연골',
+  'arytenoid cartilage': '피열연골', 'corniculate cartilage': '소각연골',
+  'epiglottic cartilage': '후두개연골',
+  'malleus': '추골(망치뼈)', 'incus': '침골(모루뼈)', 'stapes': '등골(등자뼈)',
+
+  // ── 척추 ────────────────────────────────────────────────────
+  'atlas (c1)': '환추(제1경추)', 'axis (c2)': '축추(제2경추)',
+  'third cervical vertebra': '제3경추', 'fourth cervical vertebra': '제4경추',
+  'fifth cervical vertebra': '제5경추', 'sixth cervical vertebra': '제6경추',
+  'seventh cervical vertebra': '제7경추',
+  'first thoracic vertebra': '제1흉추', 'second thoracic vertebra': '제2흉추',
+  'third thoracic vertebra': '제3흉추', 'fourth thoracic vertebra': '제4흉추',
+  'fifth thoracic vertebra': '제5흉추', 'sixth thoracic vertebra': '제6흉추',
+  'seventh thoracic vertebra': '제7흉추', 'eighth thoracic vertebra': '제8흉추',
+  'ninth thoracic vertebra': '제9흉추', 'tenth thoracic vertebra': '제10흉추',
+  'eleventh thoracic vertebra': '제11흉추', 'twelfth thoracic vertebra': '제12흉추',
+  'first lumbar vertebra': '제1요추', 'second lumbar vertebra': '제2요추',
+  'third lumbar vertebra': '제3요추', 'fourth lumbar vertebra': '제4요추',
+  'fifth lumbar vertebra': '제5요추',
+  'sacrum': '천골', 'coccyx': '미골',
+
+  // ── 흉곽 ────────────────────────────────────────────────────
+  'first rib': '제1늑골', 'second rib': '제2늑골', 'third rib': '제3늑골',
+  'fourth rib': '제4늑골', 'fifth rib': '제5늑골', 'sixth rib': '제6늑골',
+  'seventh rib': '제7늑골', 'eighth rib': '제8늑골', 'ninth rib': '제9늑골',
+  'tenth rib': '제10늑골', 'eleventh rib': '제11늑골', 'twelfth rib': '제12늑골',
+  'manubrium of sternum': '흉골병', 'body of sternum': '흉골체', 'xiphoid process': '검상돌기',
+
+  // ── 팔이음뼈·팔 ──────────────────────────────────────────────
+  'clavicle': '쇄골', 'scapula': '견갑골', 'humerus': '상완골',
+  'radius': '요골', 'ulna': '척골',
+  'scaphoid bone': '주상골(손)', 'lunate bone': '월상골', 'triquetrum': '삼각골',
+  'pisiform bone': '두상골', 'trapezium bone': '대능형골', 'trapezoid bone': '소능형골',
+  'capitate bone': '유두골', 'hamate bone': '유구골',
+  'first metacarpal bone': '제1중수골', 'second metacarpal bone': '제2중수골',
+  'third metacarpal bone': '제3중수골', 'fourth metacarpal bone': '제4중수골',
+  'fifth metacarpal bone': '제5중수골',
+
+  // ── 다리이음뼈·다리 ──────────────────────────────────────────
+  'hip bone': '관골(볼기뼈)', 'femur': '대퇴골', 'patella': '슬개골',
+  'tibia': '경골', 'fibula': '비골(종아리뼈)',
+  'talus': '거골', 'calcaneus': '종골', 'navicular bone': '주상골(발)',
+  'cuboid bone': '입방골', 'medial cuneiform bone': '내측설상골',
+  'intermediate cuneiform bone': '중간설상골', 'lateral cuneiform bone': '외측설상골',
+  'first metatarsal bone': '제1중족골', 'second metatarsal bone': '제2중족골',
+  'third metatarsal bone': '제3중족골', 'fourth metatarsal bone': '제4중족골',
+  'fifth metatarsal bone': '제5중족골',
+
+  // ── 등·목 근육 ──────────────────────────────────────────────
+  'trapezius': '승모근', 'descending part of trapezius': '승모근 상부',
+  'transverse part of trapezius': '승모근 중부', 'ascending part of trapezius': '승모근 하부',
+  'latissimus dorsi': '광배근', 'rhomboid major': '대능형근', 'rhomboid minor': '소능형근',
+  'levator scapulae': '견갑거근', 'serratus posterior superior': '상후거근',
+  'serratus posterior inferior': '하후거근',
+  'splenius capitis': '두판상근', 'splenius cervicis': '경판상근',
+  'semispinalis capitis': '두반극근', 'semispinalis cervicis': '경반극근',
+  'semispinalis thoracis': '흉반극근',
+  'spinalis thoracis': '흉극근', 'spinalis cervicis': '경극근',
+  'longissimus capitis': '두최장근', 'longissimus cervicis': '경최장근',
+  'longissimus thoracis': '흉최장근',
+  'iliocostalis lumborum': '요장늑근', 'iliocostalis thoracis': '흉장늑근',
+  'iliocostalis cervicis': '경장늑근', 'iliocostalis colli': '경장늑근',
+  'multifidus lumborum': '요다열근', 'multifidus thoracis': '흉다열근',
+  'multifidus colli': '경다열근', 'multifidus': '다열근',
+  'quadratus lumborum': '요방형근',
+  'rotatores lumborum': '요회선근', 'rotatores thoracis': '흉회선근',
+  'sternocleidomastoid': '흉쇄유돌근', 'scalenus anterior': '전사각근',
+  'scalenus medius': '중사각근', 'scalenus posterior': '후사각근',
+  'platysma': '광경근', 'omohyoid': '견갑설골근', 'sternohyoid': '흉골설골근',
+  'sternothyroid': '흉골갑상근', 'thyrohyoid': '갑상설골근',
+  'digastric': '악이복근', 'anterior belly of digastric': '악이복근 전복',
+  'posterior belly of digastric': '악이복근 후복',
+  'mylohyoid': '악설골근', 'geniohyoid': '이설골근', 'stylohyoid': '경돌설골근',
+  'longus colli': '경장근', 'longus capitis': '두장근',
+  'rectus capitis posterior major': '대후두직근', 'rectus capitis posterior minor': '소후두직근',
+  'obliquus capitis superior': '상두사근', 'obliquus capitis inferior': '하두사근',
+
+  // ── 가슴·배 근육 ────────────────────────────────────────────
+  'pectoralis major': '대흉근', 'pectoralis minor': '소흉근',
+  'clavicular head of pectoralis major': '대흉근 쇄골두',
+  'sternocostal head of pectoralis major': '대흉근 흉늑두',
+  'serratus anterior': '전거근', 'subclavius': '쇄골하근',
+  'external intercostal': '외늑간근', 'internal intercostal': '내늑간근',
+  'innermost intercostal': '최내늑간근', 'transversus thoracis': '흉횡근',
+  'diaphragm': '횡격막',
+  'rectus abdominis': '복직근', 'external oblique': '외복사근',
+  'internal oblique': '내복사근', 'transversus abdominis': '복횡근',
+  'pyramidalis': '추체근',
+
+  // ── 어깨·팔 근육 ────────────────────────────────────────────
+  'deltoid': '삼각근', 'clavicular part of deltoid': '삼각근 전부',
+  'acromial part of deltoid': '삼각근 중부', 'spinal part of deltoid': '삼각근 후부',
+  'supraspinatus': '극상근', 'infraspinatus': '극하근',
+  'teres minor': '소원근', 'teres major': '대원근', 'subscapularis': '견갑하근',
+  'coracobrachialis': '오훼완근', 'biceps brachii': '상완이두근',
+  'brachialis': '상완근', 'triceps brachii': '상완삼두근', 'anconeus': '주근',
+  'brachioradialis': '완요골근', 'pronator teres': '원회내근',
+  'pronator quadratus': '방형회내근', 'supinator': '회외근',
+  'flexor carpi radialis': '요측수근굴근', 'flexor carpi ulnaris': '척측수근굴근',
+  'palmaris longus': '장장근',
+  'flexor digitorum superficialis': '천지굴근', 'flexor digitorum profundus': '심지굴근',
+  'flexor pollicis longus': '장무지굴근',
+  'extensor carpi radialis longus': '장요측수근신근',
+  'extensor carpi radialis brevis': '단요측수근신근',
+  'extensor carpi ulnaris': '척측수근신근',
+  'extensor digitorum': '지신근', 'extensor digiti minimi': '소지신근',
+  'extensor indicis': '시지신근',
+  'abductor pollicis longus': '장무지외전근', 'extensor pollicis longus': '장무지신근',
+  'extensor pollicis brevis': '단무지신근',
+  'abductor pollicis brevis': '단무지외전근', 'flexor pollicis brevis': '단무지굴근',
+  'opponens pollicis': '무지대립근', 'adductor pollicis': '무지내전근',
+  'abductor digiti minimi of hand': '소지외전근',
+
+  // ── 골반·엉덩이 근육 ────────────────────────────────────────
+  'gluteus maximus': '대둔근', 'gluteus medius': '중둔근', 'gluteus minimus': '소둔근',
+  'piriformis': '이상근', 'obturator internus': '내폐쇄근', 'obturator externus': '외폐쇄근',
+  'superior gemellus': '상쌍자근', 'inferior gemellus': '하쌍자근',
+  'quadratus femoris': '대퇴방형근', 'tensor fasciae latae': '대퇴근막장근',
+  'psoas major': '대요근', 'psoas minor': '소요근', 'iliacus': '장골근',
+  'levator ani': '항문거근', 'coccygeus': '미골근',
+  'iliococcygeus': '장골미골근', 'pubococcygeus': '치골미골근', 'puborectalis': '치골직장근',
+  'external anal sphincter': '외항문괄약근',
+
+  // ── 넓적다리 근육 ───────────────────────────────────────────
+  'sartorius': '봉공근', 'rectus femoris': '대퇴직근',
+  'vastus lateralis': '외측광근', 'vastus medialis': '내측광근',
+  'vastus intermedius': '중간광근', 'articularis genus': '슬관절근',
+  'adductor magnus': '대내전근', 'adductor longus': '장내전근',
+  'adductor brevis': '단내전근', 'adductor minimus': '소내전근',
+  'pectineus': '치골근', 'gracilis': '박근',
+  'biceps femoris': '대퇴이두근', 'semitendinosus': '반건양근', 'semimembranosus': '반막양근',
+  'popliteus': '슬와근',
+
+  // ── 종아리·발 근육 ──────────────────────────────────────────
+  'gastrocnemius': '비복근', 'soleus': '가자미근', 'plantaris': '족척근',
+  'tibialis anterior': '전경골근', 'tibialis posterior': '후경골근',
+  'extensor digitorum longus': '장지신근', 'extensor hallucis longus': '장무지신근(발)',
+  'extensor digitorum brevis': '단지신근', 'extensor hallucis brevis': '단무지신근(발)',
+  'flexor digitorum longus': '장지굴근', 'flexor hallucis longus': '장무지굴근(발)',
+  'flexor digitorum brevis': '단지굴근', 'flexor hallucis brevis': '단무지굴근(발)',
+  'fibularis longus': '장비골근', 'fibularis brevis': '단비골근', 'fibularis tertius': '제3비골근',
+  'peroneus longus': '장비골근', 'peroneus brevis': '단비골근',
+  'abductor hallucis': '무지외전근', 'adductor hallucis': '무지내전근',
+  'abductor digiti minimi of foot': '소지외전근(발)',
+  'quadratus plantae': '족저방형근',
+
+  // ── 근막·힘줄 ───────────────────────────────────────────────
+  'calcaneal tendon': '아킬레스건(종골건)', 'plantar aponeurosis': '족저근막',
+  'iliotibial tract': '장경인대(장경대)', 'thoracolumbar fascia': '흉요근막',
+  'crural fascia': '하퇴근막', 'fascia lata': '대퇴근막',
+  'brachial fascia': '상완근막', 'antebrachial fascia': '전완근막',
+  'epicranial aponeurosis': '두개건막',
+
+  // ── 주요 인대 ───────────────────────────────────────────────
+  'anterior cruciate ligament': '전십자인대', 'posterior cruciate ligament': '후십자인대',
+  'tibial collateral ligament': '내측측부인대(무릎)',
+  'fibular collateral ligament': '외측측부인대(무릎)',
+  'medial meniscus': '내측반월판', 'lateral meniscus': '외측반월판',
+  'patellar ligament': '슬개인대',
+  'anterior talofibular ligament': '전거비인대',
+  'calcaneofibular ligament': '종비인대',
+  'posterior talofibular ligament': '후거비인대',
+  'deltoid ligament': '삼각인대(발목)',
+  'anterior longitudinal ligament': '전종인대', 'posterior longitudinal ligament': '후종인대',
+  'ligamentum flavum': '황색인대', 'supraspinous ligament': '극상인대',
+  'interspinous ligament': '극간인대', 'nuchal ligament': '항인대',
+  'sacrotuberous ligament': '천결절인대', 'sacrospinous ligament': '천극인대',
+  'iliolumbar ligament': '장요인대',
+  'anterior sacro-iliac ligament': '전천장인대', 'posterior sacro-iliac ligament': '후천장인대',
+  'interosseous sacro-iliac ligament': '골간천장인대',
+  'iliofemoral ligament': '장골대퇴인대', 'pubofemoral ligament': '치골대퇴인대',
+  'ischiofemoral ligament': '좌골대퇴인대',
+  'descending part of iliofemoral ligament': '장골대퇴인대 하행부',
+  'transverse part of iliofemoral ligament': '장골대퇴인대 횡부',
+  'obturator membrane': '폐쇄막', 'inguinal ligament': '서혜인대',
+  'acetabular labrum': '관골구순', 'glenoid labrum': '관절와순',
+  'coracoacromial ligament': '오훼견봉인대', 'coraco-acromial ligament': '오훼견봉인대',
+  'coracohumeral ligament': '오훼상완인대', 'acromioclavicular ligament': '견쇄인대',
+  'costoclavicular ligament': '늑쇄인대', 'annular ligament of radius': '요골윤상인대',
+  'articular capsule of hip joint': '고관절낭',
+  'articular capsule of knee joint': '슬관절낭',
+  'articular capsule of glenohumeral joint': '견관절낭',
+  'articular capsule of elbow joint': '주관절낭',
+
+  // ── 주요 신경 ───────────────────────────────────────────────
+  'sciatic nerve': '좌골신경', 'femoral nerve': '대퇴신경', 'obturator nerve': '폐쇄신경',
+  'tibial nerve': '경골신경', 'common fibular nerve': '총비골신경',
+  'superior gluteal nerve': '상둔신경', 'inferior gluteal nerve': '하둔신경',
+  'pudendal nerve': '음부신경', 'lumbar plexus': '요신경총', 'sacral plexus': '천골신경총',
+  'lumbosacral plexus': '요천신경총', 'brachial plexus': '완신경총',
+  'median nerve': '정중신경', 'ulnar nerve': '척골신경', 'radial nerve': '요골신경',
+  'musculocutaneous nerve': '근피신경', 'axillary nerve': '액와신경',
+  'phrenic nerve': '횡격신경', 'vagus nerve (x)': '미주신경',
+  'spinal cord': '척수', 'cauda equina': '마미',
+};
+
+const p = 'tools/ko-names.json';
+const ko = JSON.parse(fs.readFileSync(p, 'utf8'));
+let added = 0;
+for (const [k, v] of Object.entries(ADD)) { if (!ko[k]) added++; ko[k] = v; }
+fs.writeFileSync(p, JSON.stringify(ko, null, 1) + '\n');
+console.log(`한글명 사전: ${Object.keys(ko).length}개 (새로 ${added}개 추가)`);
