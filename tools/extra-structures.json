@@ -1,0 +1,30 @@
+[
+  {
+    "id": "X22348",
+    "stl": "FMA22348",
+    "nameEn": "right quadratus lumborum",
+    "targetTris": 3200,
+    "note": "ISA(4.0판) 세트에 없어서 전체판(3.0판)에서 가져옴"
+  },
+  {
+    "id": "X22349",
+    "stl": "FMA22349",
+    "nameEn": "left quadratus lumborum",
+    "targetTris": 3200,
+    "note": "ISA(4.0판) 세트에 없어서 전체판(3.0판)에서 가져옴"
+  },
+  {
+    "id": "X22878",
+    "stl": "FMA22878",
+    "nameEn": "right multifidus",
+    "targetTris": 9000,
+    "note": "ISA(4.0판) 세트에 없어서 전체판(3.0판)에서 가져옴"
+  },
+  {
+    "id": "X22879",
+    "stl": "FMA22879",
+    "nameEn": "left multifidus",
+    "targetTris": 9000,
+    "note": "ISA(4.0판) 세트에 없어서 전체판(3.0판)에서 가져옴"
+  }
+]

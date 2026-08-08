@@ -9,6 +9,10 @@ import fs from 'node:fs';
 const ids = fs.readFileSync('tools/region_ids.txt', 'utf8').trim().split(/\s+/);
 const meta = JSON.parse(fs.readFileSync('/workspace/jixiangying/anatomy/data/anatomy_data_simple_refined.json', 'utf8'));
 const nameOf = {}; for (const l of Object.values(meta)) for (const it of l) nameOf[it.id] = it.nameEn;
+// ISA 세트에 없어서 BodyParts3D 3.0판에서 가져온 구조
+const EXTRAS = JSON.parse(fs.readFileSync('tools/extra-structures.json', 'utf8'));
+const EXTRA_IDS = new Set(EXTRAS.map(e => e.id));
+for (const ex of EXTRAS) nameOf[ex.id] = ex.nameEn;
 const burial = Object.fromEntries(JSON.parse(fs.readFileSync('/tmp/burial.json', 'utf8')).map(r => [r.id, r]));
 const sides = Object.fromEntries(JSON.parse(fs.readFileSync('/tmp/sides.json', 'utf8')).map(r => [r.id, r]));
 
@@ -29,6 +33,8 @@ const TA2_ALIAS = {
   'lumbar rotator': '(rotatores lumborum)',
   'lateral lumbar intertransversarius': 'lateral intertransversarii lumborum muscles',
   'medial lumbar intertransversarius': 'medial intertransversarii lumborum muscles',
+  // 3.0판 메쉬는 다열근 전체(천골~경추)라 부위별 항목이 아니라 총칭을 쓴다
+  'multifidus': 'multifidus muscles',
 };
 const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V'], ORD = { first: 1, second: 2, third: 3, fourth: 4, fifth: 5 };
 
@@ -89,6 +95,8 @@ const T = {
   'iliacus':            ['장골근', 1, '고관절', '확실'],
 
   // 요추 심부 (depth 1)
+  'quadratus lumborum': ['요방형근', 1, '요추', '확실'],
+  'multifidus':         ['다열근', 1, '요추', '확실'],
   'lumbar rotator':                    ['요회선근', 1, '요추', '검수'],
   'lateral lumbar intertransversarius': ['외측 요횡돌기간근', 1, '요추', '검수'],
   'medial lumbar intertransversarius':  ['내측 요횡돌기간근', 1, '요추', '검수'],
@@ -164,6 +172,13 @@ for (const id of ids) {
   };
   // 형상 측정과 내 추정이 어긋난 것. 왜 어긋났는지 이유를 남긴다.
   if (CONFLICT[c]) item.검수요망 = CONFLICT[c];
+  // 3.0판에서 가져온 구조는 판본이 달라 위치가 9~16mm 어긋난다
+  if (EXTRA_IDS.has(id)) {
+    item.출처.nameEn = '원본(BodyParts3D 3.0판)';
+    item.판본주의 = 'ISA(4.0판) 세트에 이 근육이 없어 전체판(3.0판)에서 가져옴. ' +
+      '좌표계는 같으나 메쉬가 재작업된 판본이라 다른 구조 대비 9~16mm 어긋날 수 있음. ' +
+      '삼각형 수도 원본에서 약 1/8로 줄여 밀도를 맞춤.';
+  }
   out.push(item);
 }
 

@@ -17,6 +17,7 @@ const SAMPLES = 60;   // 구조당 광선 개수
 const meta = JSON.parse(fs.readFileSync(META, 'utf8'));
 const nameOf = {}, sysOf = {};
 for (const list of Object.values(meta)) for (const it of list) { nameOf[it.id] = it.nameEn; sysOf[it.id] = it.systemEn; }
+for (const ex of JSON.parse(fs.readFileSync('tools/extra-structures.json', 'utf8'))) { nameOf[ex.id] = ex.nameEn; sysOf[ex.id] = 'Muscular System'; }
 const ids = fs.readFileSync(process.argv[2], 'utf8').trim().split(/\s+/);
 
 // .obj → three.js Mesh

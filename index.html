@@ -6,29 +6,64 @@
   <title>근골격계 뷰어 — 골반/고관절/요추</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; background: #000; overflow: hidden; }
+    html, body { height: 100%; background: #000; overflow: hidden;
+                 font: 13px system-ui, -apple-system, sans-serif; color: #ccc; }
     /* 손가락으로 돌릴 때 브라우저가 화면을 스크롤해버리는 것 방지 */
     canvas { display: block; touch-action: none; }
 
-    #status {
-      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      color: #888; font: 14px system-ui, sans-serif; text-align: center;
-    }
-    #credit {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      padding: 6px 10px; background: rgba(0,0,0,.6);
-      color: #666; font: 10px/1.5 system-ui, sans-serif; text-align: center;
-    }
+    #status { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+              color: #888; text-align: center; }
+
+    /* 조작부. 태블릿에서 손가락으로 집을 수 있게 크게. */
+    #panel { position: fixed; left: 0; right: 0; bottom: 22px;
+             padding: 10px 14px; background: rgba(0,0,0,.72); }
+    /* .row 의 display:flex 가 브라우저 기본 [hidden]{display:none} 를 이겨버린다 */
+    [hidden] { display: none !important; }
+    .row { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
+    .row > label { width: 40px; flex: none; color: #999; }
+    .row > output { width: 96px; flex: none; text-align: right; color: #eee; }
+    input[type=range] { flex: 1; height: 34px; accent-color: #c85; }
+    .btns { display: flex; gap: 6px; flex: 1; }
+    .btns button { flex: 1; height: 34px; background: #222; color: #aaa;
+                   border: 1px solid #444; border-radius: 4px; font-size: 13px; }
+    .btns button[aria-pressed=true] { background: #c85; color: #111; border-color: #c85; }
+
+    #credit { position: fixed; bottom: 0; left: 0; right: 0; padding: 4px 10px;
+              background: rgba(0,0,0,.85); color: #666; font-size: 10px; text-align: center; }
     #credit a { color: #888; }
   </style>
 </head>
 <body>
   <div id="status">불러오는 중…</div>
+
+  <div id="panel" hidden>
+    <div class="row">
+      <label for="layer">층</label>
+      <input id="layer" type="range" min="0" max="3" step="1" value="3">
+      <output id="layerOut"></output>
+    </div>
+    <div class="row">
+      <label>단면</label>
+      <div class="btns">
+        <button data-axis="off" aria-pressed="true">끄기</button>
+        <button data-axis="y">가로</button>
+        <button data-axis="x">세로</button>
+        <button data-axis="z">앞뒤</button>
+      </div>
+    </div>
+    <div class="row" id="cutRow" hidden>
+      <label for="cut">위치</label>
+      <input id="cut" type="range" min="0" max="1000" step="1" value="500">
+      <output id="cutOut"></output>
+    </div>
+  </div>
+
   <!-- CC BY-SA 2.1 Japan 표기 의무. 지우지 말 것 -->
   <div id="credit">
     BodyParts3D, &copy; The Database Center for Life Science —
     <a href="https://creativecommons.org/licenses/by-sa/2.1/jp/" target="_blank" rel="noopener">CC BY-SA 2.1 Japan</a>
   </div>
+
   <script type="module" src="/main.js"></script>
 </body>
 </html>

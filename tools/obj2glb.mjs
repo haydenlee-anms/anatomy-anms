@@ -14,6 +14,8 @@ const ids = fs.readFileSync(ID_LIST, 'utf8').trim().split(/\s+/);
 const meta = JSON.parse(fs.readFileSync(META, 'utf8'));
 const nameOf = {};
 for (const list of Object.values(meta)) for (const it of list) nameOf[it.id] = it.nameEn;
+// ISA 세트에 없어서 3.0판에서 가져온 구조 (tools/stl2obj.mjs 가 만든 것)
+for (const ex of JSON.parse(fs.readFileSync('tools/extra-structures.json', 'utf8'))) nameOf[ex.id] = ex.nameEn;
 
 // --- .obj 파싱 ---------------------------------------------------------
 // 이 데이터셋은 f 줄이 항상 "v//vn" 이고 v 인덱스 == vn 인덱스다. 그 가정을 검사한다.
