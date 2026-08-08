@@ -1,0 +1,45 @@
+# 이 브랜치에 push가 일어나면 자동으로 빌드해서 GitHub Pages에 올린다.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [claude/musculoskeletal-3d-viewer-start-yjqymu]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      # enablement: true 로 Pages를 자동으로 켠다 (설정 화면에서 손으로 켤 필요 없게)
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
