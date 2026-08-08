@@ -1,16 +1,19 @@
-// BodyParts3D 3.0판 STL을 4.0판 ISA 세트와 같은 밀도의 .obj로 변환한다.
+// BodyParts3D 3.0 전체판 STL을 뷰어가 쓸 밀도의 .obj로 변환한다.
 //
-// 왜 필요한가: 우리가 쓰는 ISA 세트(4.0판)에는 요방형근과 다열근이 빠져 있다.
-// 전체판(3.0판)에는 있지만 메쉬가 7~14배 조밀해서 그대로 넣으면 모델이 무거워진다.
+// 왜 전체판을 쓰나: 처음엔 4.0판의 ISA(축소판) 세트를 썼는데 요방형근·다열근이
+// 빠져 있었다. 전체판에는 있다. 두 판본을 섞으면 같은 근육도 위치가 9~16mm
+// 어긋나므로, 전체판에 있는 것은 전부 전체판으로 통일한다.
 //
-// 주의: 3.0판과 4.0판은 좌표계는 같지만 메쉬가 재작업되어 같은 근육도
-// 무게중심이 9~16mm 어긋난다. 이 파일로 들어온 구조는 그만큼 오차가 있다.
+// 왜 감면(삼각형 줄이기)이 필요한가: 3.0판 메쉬는 4.0판보다 7~14배 조밀해서
+// 그대로 넣으면 태블릿이 버벅인다. 기존과 같은 삼각형 수로 맞춘다.
+//
+// 작업 목록은 tools/stl-jobs.json (id / stl / nameEn / targetTris).
 import fs from 'node:fs';
 import path from 'node:path';
 
 const STL_DIR = '/workspace/kmm/BodyParts3D/assets/BodyParts3D_data/stl';
 const OUT_DIR = '/workspace/jixiangying/anatomy/isa_BP3D_4.0_obj_99';
-const extras = JSON.parse(fs.readFileSync('tools/extra-structures.json', 'utf8'));
+const extras = JSON.parse(fs.readFileSync(process.argv[2] || 'tools/stl-jobs.json', 'utf8'));
 
 // 바이너리 STL: 80바이트 헤더 + 삼각형 수(uint32) + 삼각형당 50바이트
 function readStl(p) {
@@ -86,7 +89,7 @@ for (const ex of extras) {
   const L = [
     '# ' + ex.nameEn,
     '# BodyParts3D, (c) The Database Center for Life Science licensed under CC Attribution-Share Alike 2.1 Japan',
-    `# 출처: BodyParts3D 3.0판 ${ex.stl}.stl 을 감면(${before}→${best.n} 삼각형)한 것. 4.0판 ISA 세트에는 없는 구조.`,
+    `# 출처: BodyParts3D 3.0 전체판 ${ex.stl}.stl 을 감면(${before}→${best.n} 삼각형)한 것.`,
   ];
   for (let i = 0; i < best.pos.length; i += 3) L.push(`v ${best.pos[i].toFixed(3)} ${best.pos[i + 1].toFixed(3)} ${best.pos[i + 2].toFixed(3)}`);
   for (let i = 0; i < nrm.length; i += 3) L.push(`vn ${nrm[i].toFixed(4)} ${nrm[i + 1].toFixed(4)} ${nrm[i + 2].toFixed(4)}`);

@@ -8,24 +8,48 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; background: #000; overflow: hidden;
                  font: 13px system-ui, -apple-system, sans-serif; color: #ccc; }
-    /* 손가락으로 돌릴 때 브라우저가 화면을 스크롤해버리는 것 방지 */
-    canvas { display: block; touch-action: none; }
+    canvas { display: block; touch-action: none; }   /* 손가락 회전 시 화면 스크롤 방지 */
+    /* .row 의 display:flex 가 브라우저 기본 [hidden]{display:none} 를 이겨버린다 */
+    [hidden] { display: none !important; }
 
     #status { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
               color: #888; text-align: center; }
 
-    /* 조작부. 태블릿에서 손가락으로 집을 수 있게 크게. */
+    /* 검색 */
+    #search { position: fixed; top: 8px; left: 8px; width: 240px; max-width: calc(100% - 16px); }
+    #q { width: 100%; height: 36px; padding: 0 10px; background: rgba(20,20,20,.9);
+         color: #eee; border: 1px solid #444; border-radius: 4px; font-size: 14px; }
+    #hits { margin-top: 4px; max-height: 44vh; overflow-y: auto;
+            background: rgba(20,20,20,.95); border-radius: 4px; }
+    #hits div { padding: 9px 10px; border-bottom: 1px solid #2a2a2a; }
+    #hits div:last-child { border-bottom: 0; }
+    #hits .sub { color: #777; font-size: 11px; }
+
+    /* 정보 패널 */
+    #info { position: fixed; top: 8px; right: 8px; width: 270px; max-width: calc(100% - 16px);
+            max-height: 66vh; overflow-y: auto; padding: 12px;
+            background: rgba(20,20,20,.95); border: 1px solid #444; border-radius: 4px; }
+    #info h2 { font-size: 16px; color: #fff; margin-bottom: 2px; }
+    #info .latin { color: #888; font-style: italic; font-size: 12px; margin-bottom: 8px; }
+    #info dt { color: #c85; font-size: 11px; margin-top: 9px; }
+    #info dd { color: #ddd; line-height: 1.5; }
+    #info .warn { margin-top: 10px; padding: 7px 8px; background: #3a2a12;
+                  border-left: 3px solid #c85; color: #d8b98a; font-size: 11px; line-height: 1.5; }
+    #info .close { position: absolute; top: 8px; right: 10px; color: #888;
+                   background: none; border: 0; font-size: 20px; }
+
+    /* 조작부 */
     #panel { position: fixed; left: 0; right: 0; bottom: 22px;
              padding: 10px 14px; background: rgba(0,0,0,.72); }
-    /* .row 의 display:flex 가 브라우저 기본 [hidden]{display:none} 를 이겨버린다 */
-    [hidden] { display: none !important; }
     .row { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
     .row > label { width: 40px; flex: none; color: #999; }
     .row > output { width: 96px; flex: none; text-align: right; color: #eee; }
     input[type=range] { flex: 1; height: 34px; accent-color: #c85; }
     .btns { display: flex; gap: 6px; flex: 1; }
-    .btns button { flex: 1; height: 34px; background: #222; color: #aaa;
-                   border: 1px solid #444; border-radius: 4px; font-size: 13px; }
+    .btns button, #flip { height: 34px; background: #222; color: #aaa;
+                          border: 1px solid #444; border-radius: 4px; font-size: 13px; }
+    .btns button { flex: 1; }
+    #flip { width: 64px; flex: none; }
     .btns button[aria-pressed=true] { background: #c85; color: #111; border-color: #c85; }
 
     #credit { position: fixed; bottom: 0; left: 0; right: 0; padding: 4px 10px;
@@ -35,6 +59,18 @@
 </head>
 <body>
   <div id="status">불러오는 중…</div>
+
+  <div id="search" hidden>
+    <input id="q" type="search" placeholder="근육 이름 (예: 이상근, glut)" autocomplete="off">
+    <div id="hits" hidden></div>
+  </div>
+
+  <div id="info" hidden>
+    <button class="close" id="infoClose" aria-label="닫기">×</button>
+    <h2 id="iName"></h2>
+    <div class="latin" id="iLatin"></div>
+    <dl id="iBody"></dl>
+  </div>
 
   <div id="panel" hidden>
     <div class="row">
@@ -54,6 +90,7 @@
     <div class="row" id="cutRow" hidden>
       <label for="cut">위치</label>
       <input id="cut" type="range" min="0" max="1000" step="1" value="500">
+      <button id="flip">뒤집기</button>
       <output id="cutOut"></output>
     </div>
   </div>

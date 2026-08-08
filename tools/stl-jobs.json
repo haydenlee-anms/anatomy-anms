@@ -1,0 +1,583 @@
+[
+ {
+  "id": "FJ1395",
+  "stl": "FMA45888",
+  "nameEn": "long head of right biceps femoris",
+  "targetTris": 5110,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1395M",
+  "stl": "FMA45889",
+  "nameEn": "long head of left biceps femoris",
+  "targetTris": 5110,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1401",
+  "stl": "FMA22452",
+  "nameEn": "right adductor brevis",
+  "targetTris": 1464,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1401M",
+  "stl": "FMA22454",
+  "nameEn": "left adductor brevis",
+  "targetTris": 1464,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1402",
+  "stl": "FMA22456",
+  "nameEn": "right adductor longus",
+  "targetTris": 2616,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1402M",
+  "stl": "FMA22457",
+  "nameEn": "left adductor longus",
+  "targetTris": 2616,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1403",
+  "stl": "FMA22459",
+  "nameEn": "right adductor magnus",
+  "targetTris": 5972,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1403M",
+  "stl": "FMA22460",
+  "nameEn": "left adductor magnus",
+  "targetTris": 5972,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1404",
+  "stl": "FMA43886",
+  "nameEn": "right adductor minimus",
+  "targetTris": 1958,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1404M",
+  "stl": "FMA43887",
+  "nameEn": "left adductor minimus",
+  "targetTris": 1958,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1416",
+  "stl": "FMA22336",
+  "nameEn": "right gemellus inferior",
+  "targetTris": 642,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1416M",
+  "stl": "FMA22337",
+  "nameEn": "left gemellus inferior",
+  "targetTris": 642,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1417",
+  "stl": "FMA22334",
+  "nameEn": "right gemellus superior",
+  "targetTris": 402,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1417M",
+  "stl": "FMA22335",
+  "nameEn": "left gemellus superior",
+  "targetTris": 402,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1418",
+  "stl": "FMA22328",
+  "nameEn": "right gluteus maximus",
+  "targetTris": 2376,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1418M",
+  "stl": "FMA22329",
+  "nameEn": "left gluteus maximus",
+  "targetTris": 2376,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1419",
+  "stl": "FMA22330",
+  "nameEn": "right gluteus medius",
+  "targetTris": 3356,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1419M",
+  "stl": "FMA22331",
+  "nameEn": "left gluteus medius",
+  "targetTris": 3356,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1420",
+  "stl": "FMA22332",
+  "nameEn": "right gluteus minimus",
+  "targetTris": 4208,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1420M",
+  "stl": "FMA22333",
+  "nameEn": "left gluteus minimus",
+  "targetTris": 4208,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1421",
+  "stl": "FMA43883",
+  "nameEn": "right gracilis",
+  "targetTris": 3172,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1421M",
+  "stl": "FMA43884",
+  "nameEn": "left gracilis",
+  "targetTris": 3172,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1422",
+  "stl": "FMA22322",
+  "nameEn": "right iliacus",
+  "targetTris": 2862,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1422M",
+  "stl": "FMA22323",
+  "nameEn": "left iliacus",
+  "targetTris": 2862,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1425",
+  "stl": "FMA22326",
+  "nameEn": "right obturator externus",
+  "targetTris": 784,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1425M",
+  "stl": "FMA22327",
+  "nameEn": "left obturator externus",
+  "targetTris": 784,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1426",
+  "stl": "FMA22324",
+  "nameEn": "right obturator internus",
+  "targetTris": 2466,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1426M",
+  "stl": "FMA22325",
+  "nameEn": "left obturator internus",
+  "targetTris": 2466,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1427",
+  "stl": "FMA22450",
+  "nameEn": "right pectineus",
+  "targetTris": 1380,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1427M",
+  "stl": "FMA22451",
+  "nameEn": "left pectineus",
+  "targetTris": 1380,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1428",
+  "stl": "FMA22340",
+  "nameEn": "right piriformis",
+  "targetTris": 1092,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1428M",
+  "stl": "FMA22341",
+  "nameEn": "left piriformis",
+  "targetTris": 1092,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1431",
+  "stl": "FMA22342",
+  "nameEn": "right psoas major",
+  "targetTris": 4900,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1431M",
+  "stl": "FMA22343",
+  "nameEn": "left psoas major",
+  "targetTris": 4900,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1432",
+  "stl": "FMA22338",
+  "nameEn": "right quadratus femoris",
+  "targetTris": 1196,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1432M",
+  "stl": "FMA22339",
+  "nameEn": "left quadratus femoris",
+  "targetTris": 1196,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1433",
+  "stl": "FMA38928",
+  "nameEn": "right rectus femoris",
+  "targetTris": 5688,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1433M",
+  "stl": "FMA38929",
+  "nameEn": "left rectus femoris",
+  "targetTris": 5688,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1434",
+  "stl": "FMA22354",
+  "nameEn": "right sartorius",
+  "targetTris": 3444,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1434M",
+  "stl": "FMA22355",
+  "nameEn": "left sartorius",
+  "targetTris": 3444,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1435",
+  "stl": "FMA22448",
+  "nameEn": "right semimembranosus",
+  "targetTris": 4612,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1435M",
+  "stl": "FMA22449",
+  "nameEn": "left semimembranosus",
+  "targetTris": 4612,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1436",
+  "stl": "FMA22358",
+  "nameEn": "right semitendinosus",
+  "targetTris": 2712,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1436M",
+  "stl": "FMA22359",
+  "nameEn": "left semitendinosus",
+  "targetTris": 2712,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1438",
+  "stl": "FMA22425",
+  "nameEn": "right tensor fasciae latae",
+  "targetTris": 1254,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1438M",
+  "stl": "FMA22426",
+  "nameEn": "left tensor fasciae latae",
+  "targetTris": 1254,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1444",
+  "stl": "FMA45891",
+  "nameEn": "short head of right biceps femoris",
+  "targetTris": 1728,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1444M",
+  "stl": "FMA45892",
+  "nameEn": "short head of left biceps femoris",
+  "targetTris": 1728,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1522",
+  "stl": "FMA23089",
+  "nameEn": "right lumbar rotator",
+  "targetTris": 4742,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1522M",
+  "stl": "FMA23090",
+  "nameEn": "left lumbar rotator",
+  "targetTris": 4742,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1527",
+  "stl": "FMA22740",
+  "nameEn": "right iliocostalis lumborum",
+  "targetTris": 15872,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1527M",
+  "stl": "FMA22741",
+  "nameEn": "left iliocostalis lumborum",
+  "targetTris": 15872,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1528",
+  "stl": "FMA22742",
+  "nameEn": "right iliocostalis thoracis",
+  "targetTris": 8386,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1528M",
+  "stl": "FMA22743",
+  "nameEn": "left iliocostalis thoracis",
+  "targetTris": 8386,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1535",
+  "stl": "FMA22751",
+  "nameEn": "right longissimus thoracis",
+  "targetTris": 15068,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ1535M",
+  "stl": "FMA22753",
+  "nameEn": "left longissimus thoracis",
+  "targetTris": 15068,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ2542",
+  "stl": "FMA46444",
+  "nameEn": "left coccygeus",
+  "targetTris": 2082,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ2544",
+  "stl": "FMA45859",
+  "nameEn": "left iliococcygeus",
+  "targetTris": 3846,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ2545",
+  "stl": "FMA45855",
+  "nameEn": "left pubococcygeus",
+  "targetTris": 4670,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ2546",
+  "stl": "FMA45857",
+  "nameEn": "left puborectalis",
+  "targetTris": 3618,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ2547",
+  "stl": "FMA46443",
+  "nameEn": "right coccygeus",
+  "targetTris": 2086,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ2549",
+  "stl": "FMA45858",
+  "nameEn": "right iliococcygeus",
+  "targetTris": 3864,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ2550",
+  "stl": "FMA45854",
+  "nameEn": "right pubococcygeus",
+  "targetTris": 4616,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ2551",
+  "stl": "FMA45856",
+  "nameEn": "right puborectalis",
+  "targetTris": 3638,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ3152",
+  "stl": "FMA16586",
+  "nameEn": "right hip bone",
+  "targetTris": 2374,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ3157",
+  "stl": "FMA13072",
+  "nameEn": "first lumbar vertebra",
+  "targetTris": 2972,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ3159",
+  "stl": "FMA13073",
+  "nameEn": "second lumbar vertebra",
+  "targetTris": 3214,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ3162",
+  "stl": "FMA13074",
+  "nameEn": "third lumbar vertebra",
+  "targetTris": 3272,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ3165",
+  "stl": "FMA13075",
+  "nameEn": "fourth lumbar vertebra",
+  "targetTris": 3512,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ3168",
+  "stl": "FMA13076",
+  "nameEn": "fifth lumbar vertebra",
+  "targetTris": 3892,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ3212",
+  "stl": "FMA16033",
+  "nameEn": "intervertebral disk of first lumbar vertebra",
+  "targetTris": 3498,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ3214",
+  "stl": "FMA16034",
+  "nameEn": "intervertebral disk of second lumbar vertebra",
+  "targetTris": 3406,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ3215",
+  "stl": "FMA16035",
+  "nameEn": "intervertebral disk of third lumbar vertebra",
+  "targetTris": 3454,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ3216",
+  "stl": "FMA16036",
+  "nameEn": "intervertebral disk of fourth lumbar vertebra",
+  "targetTris": 3512,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ3217",
+  "stl": "FMA16037",
+  "nameEn": "intervertebral disk of fifth lumbar vertebra",
+  "targetTris": 3498,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ3259",
+  "stl": "FMA24475",
+  "nameEn": "left femur",
+  "targetTris": 3204,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ3288",
+  "stl": "FMA16587",
+  "nameEn": "left hip bone",
+  "targetTris": 2332,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ3365",
+  "stl": "FMA24474",
+  "nameEn": "right femur",
+  "targetTris": 3102,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "FJ3393",
+  "stl": "FMA16202",
+  "nameEn": "Sacrum",
+  "targetTris": 9922,
+  "note": "BodyParts3D 3.0 전체판. 4.0 ISA판과 같은 밀도로 감면"
+ },
+ {
+  "id": "X22348",
+  "stl": "FMA22348",
+  "nameEn": "right quadratus lumborum",
+  "targetTris": 3200,
+  "note": "ISA(4.0판) 세트에 없어서 전체판(3.0판)에서 가져옴"
+ },
+ {
+  "id": "X22349",
+  "stl": "FMA22349",
+  "nameEn": "left quadratus lumborum",
+  "targetTris": 3200,
+  "note": "ISA(4.0판) 세트에 없어서 전체판(3.0판)에서 가져옴"
+ },
+ {
+  "id": "X22878",
+  "stl": "FMA22878",
+  "nameEn": "right multifidus",
+  "targetTris": 9000,
+  "note": "ISA(4.0판) 세트에 없어서 전체판(3.0판)에서 가져옴"
+ },
+ {
+  "id": "X22879",
+  "stl": "FMA22879",
+  "nameEn": "left multifidus",
+  "targetTris": 9000,
+  "note": "ISA(4.0판) 세트에 없어서 전체판(3.0판)에서 가져옴"
+ }
+]

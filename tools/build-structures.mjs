@@ -9,10 +9,11 @@ import fs from 'node:fs';
 const ids = fs.readFileSync('tools/region_ids.txt', 'utf8').trim().split(/\s+/);
 const meta = JSON.parse(fs.readFileSync('/workspace/jixiangying/anatomy/data/anatomy_data_simple_refined.json', 'utf8'));
 const nameOf = {}; for (const l of Object.values(meta)) for (const it of l) nameOf[it.id] = it.nameEn;
-// ISA 세트에 없어서 BodyParts3D 3.0판에서 가져온 구조
-const EXTRAS = JSON.parse(fs.readFileSync('tools/extra-structures.json', 'utf8'));
-const EXTRA_IDS = new Set(EXTRAS.map(e => e.id));
-for (const ex of EXTRAS) nameOf[ex.id] = ex.nameEn;
+for (const ex of JSON.parse(fs.readFileSync('tools/extra-structures.json', 'utf8'))) nameOf[ex.id] = ex.nameEn;
+
+// 대부분은 BodyParts3D 3.0 전체판으로 통일했다 (tools/stl-jobs.json).
+// 전체판에 STL이 없어 4.0 ISA판을 그대로 쓰는 것만 따로 표시한다.
+const FROM_30 = new Set(JSON.parse(fs.readFileSync('tools/stl-jobs.json', 'utf8')).map(j => j.id));
 const burial = Object.fromEntries(JSON.parse(fs.readFileSync('/tmp/burial.json', 'utf8')).map(r => [r.id, r]));
 const sides = Object.fromEntries(JSON.parse(fs.readFileSync('/tmp/sides.json', 'utf8')).map(r => [r.id, r]));
 
@@ -162,7 +163,8 @@ for (const id of ids) {
     좌우: s ? s.side : null,
     nameEn: en,
     출처: {
-      한글명: check === '확실' ? '추정(표준용어)' : '추정(검수요망)',
+      // 2026-08-08 사용자가 한글명과 depth를 검수 없이 승인함 ("맞다고 쳐")
+      한글명: check === '확실' ? '추정(표준용어)' : '추정(사용자 승인)',
       라틴명: la.src,
       depth: '추정+측정',
       좌우: '측정(형상)',
@@ -172,12 +174,13 @@ for (const id of ids) {
   };
   // 형상 측정과 내 추정이 어긋난 것. 왜 어긋났는지 이유를 남긴다.
   if (CONFLICT[c]) item.검수요망 = CONFLICT[c];
-  // 3.0판에서 가져온 구조는 판본이 달라 위치가 9~16mm 어긋난다
-  if (EXTRA_IDS.has(id)) {
-    item.출처.nameEn = '원본(BodyParts3D 3.0판)';
-    item.판본주의 = 'ISA(4.0판) 세트에 이 근육이 없어 전체판(3.0판)에서 가져옴. ' +
-      '좌표계는 같으나 메쉬가 재작업된 판본이라 다른 구조 대비 9~16mm 어긋날 수 있음. ' +
-      '삼각형 수도 원본에서 약 1/8로 줄여 밀도를 맞춤.';
+  // 판본 표시. 기본은 3.0 전체판이고, 전체판에 없는 것만 4.0 ISA판이라 어긋난다.
+  if (FROM_30.has(id)) {
+    item.출처.nameEn = '원본(BodyParts3D 3.0 전체판)';
+  } else {
+    item.출처.nameEn = '원본(BodyParts3D 4.0 ISA판)';
+    item.판본주의 = '3.0 전체판에 이 구조의 STL이 없어 4.0 ISA판 메쉬를 그대로 씀. ' +
+      '나머지 85개는 3.0 전체판으로 통일되어 있어, 이 구조만 위치가 10mm 안팎 어긋날 수 있음.';
   }
   out.push(item);
 }
