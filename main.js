@@ -26,27 +26,38 @@ scene.add(new THREE.HemisphereLight(0xffffff, 0x222233, 1.4));
 const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(1, 1.5, 2); scene.add(key);
 const fill = new THREE.DirectionalLight(0xffffff, 0.7); fill.position.set(-1.5, 0, -1.5); scene.add(fill);
 
-// 뼈와 근육을 같은 색으로 두면 "뼈까지 벗겨졌는지"를 눈으로 확인할 수 없다.
+// 전부 같은 색이면 층을 벗겨도 뼈까지 벗겨졌는지 눈으로 확인할 수 없다. 종류별로 나눈다.
 const MAT = {
-  bone:   new THREE.MeshStandardMaterial({ color: 0xe8e0d0, roughness: 0.85, side: THREE.DoubleSide }),
-  muscle: new THREE.MeshStandardMaterial({ color: 0xc74d47, roughness: 0.75, side: THREE.DoubleSide }),
-  pick:   new THREE.MeshStandardMaterial({ color: 0xffd24a, roughness: 0.5, emissive: 0x553300, side: THREE.DoubleSide }),
+  '뼈':        new THREE.MeshStandardMaterial({ color: 0xe8e0d0, roughness: 0.85, side: THREE.DoubleSide }),
+  '근육':      new THREE.MeshStandardMaterial({ color: 0xc74d47, roughness: 0.75, side: THREE.DoubleSide }),
+  '인대·근막': new THREE.MeshStandardMaterial({ color: 0xcfc6a8, roughness: 0.6, side: THREE.DoubleSide }),
+  pick:        new THREE.MeshStandardMaterial({ color: 0xffd24a, roughness: 0.5, emissive: 0x553300, side: THREE.DoubleSide }),
 };
+const matOf = (info) => MAT[info?.종류] || MAT['근육'];
 
 const LAYER_LABEL = ['뼈만', '심부까지', '중간층까지', '표층까지(전체)'];
 const parts = [];      // { mesh, info }
 let attachments = {};
+let sites = [];        // 사용자가 정의한 부위
+let obs = [];          // 날짜 붙은 관찰 기록
 let selected = null;
 let box, size, center;
 
 Promise.all([
   fetch(BASE + 'structures.json').then(r => r.json()),
   fetch(BASE + 'attachments.json').then(r => r.json()),
+  fetch(BASE + 'sites.json').then(r => r.json()).catch(() => ({ sites: [] })),
+  // .jsonl 은 한 줄에 기록 하나. _주의 같은 메모 줄은 걸러낸다.
+  fetch(BASE + 'observations.jsonl').then(r => r.text()).then(t =>
+    t.split('\n').filter(l => l.trim()).map(l => { try { return JSON.parse(l); } catch { return null; } })
+     .filter(o => o && o.date)).catch(() => []),
   new GLTFLoader().loadAsync(BASE + 'pelvis.glb', (e) => {
     if (e.total) status.textContent = `불러오는 중… ${Math.round((e.loaded / e.total) * 100)}%`;
   }),
-]).then(([structures, atts, gltf]) => {
+]).then(([structures, atts, siteFile, observations, gltf]) => {
   attachments = atts;
+  sites = siteFile.sites || [];
+  obs = observations;
   const byMesh = new Map(structures.map(s => [s.meshName, s]));
 
   gltf.scene.traverse((o) => {
@@ -54,7 +65,7 @@ Promise.all([
     // .glb의 노드 이름이 structures.json의 meshName이다 (tools/obj2glb.mjs 참조)
     const info = byMesh.get(o.name) || byMesh.get(o.parent?.name);
     o.userData.info = info;
-    o.material = info?.depth === 0 ? MAT.bone : MAT.muscle;
+    o.material = matOf(info);
     parts.push({ mesh: o, info });
   });
   scene.add(gltf.scene);
@@ -121,8 +132,10 @@ function attachKey(nameEn) {
     .replace(/\s+/g, ' ').trim();
 }
 
+const esc = (t) => String(t).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+
 function select(part) {
-  if (selected) selected.mesh.material = selected.info?.depth === 0 ? MAT.bone : MAT.muscle;
+  if (selected) selected.mesh.material = matOf(selected.info);
   selected = part;
   if (!part) { $('info').hidden = true; return; }
   part.mesh.material = MAT.pick;
@@ -133,14 +146,14 @@ function select(part) {
 
   const rows = [];
   const add = (k, v) => { if (v) rows.push(`<dt>${k}</dt><dd>${v}</dd>`); };
-  add('영문명', s?.nameEn);
-  add('부위 / 층', s ? `${s.region} · ${LAYER_LABEL[s.depth]}`.replace('까지', '') : '');
+  add('영문명', esc(s?.nameEn || ''));
+  add('종류 / 부위 / 층', s ? `${s.종류} · ${s.region} · ${LAYER_LABEL[s.depth].replace('까지', '')}` : '');
 
   const a = attachments[attachKey(s?.nameEn)];
-  add('이는 곳', a?.이는곳);
-  add('닿는 곳', a?.닿는곳);
-  add('비고', a?.비고);
-  add('mesh', `<code>${part.mesh.name}</code>`);
+  add('이는 곳', a && esc(a.이는곳));
+  add('닿는 곳', a && esc(a.닿는곳));
+  add('비고', a?.비고 && esc(a.비고));
+  add('mesh', `<code>${esc(part.mesh.name)}</code>`);
 
   let html = rows.join('');
   if (a) {
@@ -149,9 +162,31 @@ function select(part) {
   } else if (s && s.depth > 0) {
     html += `<div class="warn">이 구조의 이는 곳/닿는 곳은 아직 안 채워져 있습니다.</div>`;
   }
-  if (s?.판본주의) html += `<div class="warn">📐 ${s.판본주의}</div>`;
+  if (s?.판본주의) html += `<div class="warn">📐 ${esc(s.판본주의)}</div>`;
+  html += notesHtml(part.mesh.name);
   $('iBody').innerHTML = html;
   $('info').hidden = false;
+}
+
+// --- 내 메모 (읽기 전용) ------------------------------------------------
+// 이 구조를 가리키는 site 를 찾고, 그 site 의 관찰 기록을 날짜순으로 보여준다.
+// 쓰기 기능은 없다. 기록 추가는 Claude에게 말해서 파일에 넣는다.
+function notesHtml(meshName) {
+  const mine = sites.filter(st => (st.refs || []).includes(meshName));
+  if (!mine.length) return '<dt>내 메모</dt><dd style="color:#777">이 구조에 연결된 기록 없음</dd>';
+
+  let h = '';
+  for (const st of mine) {
+    const list = obs.filter(o => o.siteId === st.id).sort((x, y) => (x.date < y.date ? 1 : -1));
+    h += `<dt>내 메모 — ${esc(st.이름)}</dt><dd>`;
+    if (st.설명) h += `<div style="color:#999;margin-bottom:5px">${esc(st.설명)}</div>`;
+    h += list.length
+      ? list.map(o => `<div style="margin:4px 0"><span style="color:#8aa">${esc(o.date)}</span>
+                       <span style="color:#c85">[${esc(o.type)}]</span> ${esc(o.text)}</div>`).join('')
+      : '<span style="color:#777">기록 없음</span>';
+    h += '</dd>';
+  }
+  return h;
 }
 $('infoClose').addEventListener('click', () => select(null));
 

@@ -579,5 +579,33 @@
   "nameEn": "left multifidus",
   "targetTris": 9000,
   "note": "ISA(4.0판) 세트에 없어서 전체판(3.0판)에서 가져옴"
+ },
+ {
+  "id": "X58776",
+  "stl": "FMA58776",
+  "nameEn": "right iliotibial tract",
+  "targetTris": 3000,
+  "note": "인대·근막. ISA판에 없어 3.0 전체판에서 가져옴"
+ },
+ {
+  "id": "X58777",
+  "stl": "FMA58777",
+  "nameEn": "left iliotibial tract",
+  "targetTris": 3000,
+  "note": "인대·근막. ISA판에 없어 3.0 전체판에서 가져옴"
+ },
+ {
+  "id": "X21964",
+  "stl": "FMA21964",
+  "nameEn": "right inguinal ligament",
+  "targetTris": 1200,
+  "note": "인대·근막. ISA판에 없어 3.0 전체판에서 가져옴"
+ },
+ {
+  "id": "X21965",
+  "stl": "FMA21965",
+  "nameEn": "left inguinal ligament",
+  "targetTris": 1200,
+  "note": "인대·근막. ISA판에 없어 3.0 전체판에서 가져옴"
  }
 ]

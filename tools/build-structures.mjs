@@ -113,6 +113,10 @@ const T = {
   'iliocostalis thoracis': ['흉장늑근', 2, '요추', '검수'],
   'longissimus thoracis':  ['흉최장근', 2, '요추', '검수'],
 
+  // 인대·근막 (BodyParts3D에 이 부위 인대는 이 둘뿐이다)
+  'inguinal ligament':   ['서혜인대', 2, '골반', '확실'],
+  'iliotibial tract':    ['장경인대(장경대)', 3, '고관절', '확실'],
+
   // 표층 (depth 3)
   'gluteus maximus':     ['대둔근', 3, '고관절', '확실'],
   'tensor fasciae latae': ['대퇴근막장근', 3, '고관절', '확실'],
@@ -154,10 +158,15 @@ for (const id of ids) {
 
   const b = burial[id], s = sides[id];
   const la = latin(c);
+  // 뼈 / 근육 / 인대·근막 — 뷰어에서 색을 나눠 칠하는 데 쓴다
+  const 종류 = depth === 0 ? '뼈'
+    : /ligament|iliotibial tract|tendinous arch/.test(c) ? '인대·근막' : '근육';
+
   const item = {
     meshName: id,
     한글명: ko + (s && s.side !== '정중' ? ` (${s.side})` : ''),
     라틴명: la.la,
+    종류,
     depth,
     region,
     좌우: s ? s.side : null,
