@@ -36,6 +36,12 @@ const TA2_ALIAS = {
   'medial lumbar intertransversarius': 'medial intertransversarii lumborum muscles',
   // 3.0판 메쉬는 다열근 전체(천골~경추)라 부위별 항목이 아니라 총칭을 쓴다
   'multifidus': 'multifidus muscles',
+  // Z-Anatomy는 부위를 더 잘게 나눠 놓았다. TA2에는 상위 항목만 있어서 그쪽으로 연결한다.
+  'descending part of iliofemoral ligament': 'iliofemoral ligament',
+  'transverse part of iliofemoral ligament': 'iliofemoral ligament',
+  'anterior layer of thoracolumbar fascia': 'thoracolumbar fascia',
+  'middle layer of thoracolumbar fascia': 'thoracolumbar fascia',
+  'posterior layer of thoracolumbar fascia': 'thoracolumbar fascia',
 };
 const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V'], ORD = { first: 1, second: 2, third: 3, fourth: 4, fifth: 5 };
 
@@ -113,9 +119,25 @@ const T = {
   'iliocostalis thoracis': ['흉장늑근', 2, '요추', '검수'],
   'longissimus thoracis':  ['흉최장근', 2, '요추', '검수'],
 
-  // 인대·근막 (BodyParts3D에 이 부위 인대는 이 둘뿐이다)
+  // 인대·근막 — BodyParts3D에는 이 둘뿐이라, 나머지는 Z-Anatomy에서 가져왔다
   'inguinal ligament':   ['서혜인대', 2, '골반', '확실'],
   'iliotibial tract':    ['장경인대(장경대)', 3, '고관절', '확실'],
+
+  // 아래는 Z-Anatomy 출처 (체형교정에 필요하다는 사용자 요청)
+  'sacrotuberous ligament':            ['천결절인대', 1, '골반', '확실'],
+  'sacrospinous ligament':             ['천극인대', 1, '골반', '확실'],
+  'iliolumbar ligament':               ['장요인대', 1, '요추', '확실'],
+  'anterior sacro-iliac ligament':     ['전천장인대', 1, '골반', '확실'],
+  'posterior sacro-iliac ligament':    ['후천장인대', 1, '골반', '확실'],
+  'interosseous sacro-iliac ligament': ['골간천장인대', 1, '골반', '확실'],
+  'descending part of iliofemoral ligament':  ['장골대퇴인대 하행부', 1, '고관절', '검수'],
+  'transverse part of iliofemoral ligament':  ['장골대퇴인대 횡부', 1, '고관절', '검수'],
+  'pubofemoral ligament':              ['치골대퇴인대', 1, '고관절', '확실'],
+  'ischiofemoral ligament':            ['좌골대퇴인대', 1, '고관절', '확실'],
+  'obturator membrane':                ['폐쇄막', 1, '골반', '확실'],
+  'anterior layer of thoracolumbar fascia':  ['흉요근막 전층', 1, '요추', '확실'],
+  'middle layer of thoracolumbar fascia':    ['흉요근막 중간층', 2, '요추', '확실'],
+  'posterior layer of thoracolumbar fascia': ['흉요근막 후층', 3, '요추', '확실'],
 
   // 표층 (depth 3)
   'gluteus maximus':     ['대둔근', 3, '고관절', '확실'],
@@ -160,7 +182,7 @@ for (const id of ids) {
   const la = latin(c);
   // 뼈 / 근육 / 인대·근막 — 뷰어에서 색을 나눠 칠하는 데 쓴다
   const 종류 = depth === 0 ? '뼈'
-    : /ligament|iliotibial tract|tendinous arch/.test(c) ? '인대·근막' : '근육';
+    : /ligament|iliotibial tract|tendinous arch|fascia|membrane/.test(c) ? '인대·근막' : '근육';
 
   const item = {
     meshName: id,
@@ -183,13 +205,18 @@ for (const id of ids) {
   };
   // 형상 측정과 내 추정이 어긋난 것. 왜 어긋났는지 이유를 남긴다.
   if (CONFLICT[c]) item.검수요망 = CONFLICT[c];
-  // 판본 표시. 기본은 3.0 전체판이고, 전체판에 없는 것만 4.0 ISA판이라 어긋난다.
-  if (FROM_30.has(id)) {
+  // 어느 자료에서 온 메쉬인지 표시
+  if (id.startsWith('ZA_')) {
+    item.출처.nameEn = '원본(Z-Anatomy, CC BY-SA 4.0)';
+    item.판본주의 = 'BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. ' +
+      '두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, ' +
+      '그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음.';
+  } else if (FROM_30.has(id)) {
     item.출처.nameEn = '원본(BodyParts3D 3.0 전체판)';
   } else {
     item.출처.nameEn = '원본(BodyParts3D 4.0 ISA판)';
     item.판본주의 = '3.0 전체판에 이 구조의 STL이 없어 4.0 ISA판 메쉬를 그대로 씀. ' +
-      '나머지 85개는 3.0 전체판으로 통일되어 있어, 이 구조만 위치가 10mm 안팎 어긋날 수 있음.';
+      '나머지는 3.0 전체판으로 통일되어 있어, 이 구조만 위치가 10mm 안팎 어긋날 수 있음.';
   }
   out.push(item);
 }

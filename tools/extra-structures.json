@@ -54,5 +54,173 @@
   "nameEn": "left inguinal ligament",
   "targetTris": 1200,
   "note": "인대·근막. ISA판에 없어 3.0 전체판에서 가져옴"
+ },
+ {
+  "id": "ZA_anterior_layer_of_thoracolumbar_fascia_l",
+  "source": "Z-Anatomy",
+  "nameEn": "Anterior layer of thoracolumbar fascia",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_anterior_layer_of_thoracolumbar_fascia_r",
+  "source": "Z-Anatomy",
+  "nameEn": "Anterior layer of thoracolumbar fascia",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_anterior_sacro_iliac_ligament_l",
+  "source": "Z-Anatomy",
+  "nameEn": "Anterior sacro-iliac ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_anterior_sacro_iliac_ligament_r",
+  "source": "Z-Anatomy",
+  "nameEn": "Anterior sacro-iliac ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_descending_part_of_iliofemoral_ligament_l",
+  "source": "Z-Anatomy",
+  "nameEn": "Descending part of iliofemoral ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_descending_part_of_iliofemoral_ligament_r",
+  "source": "Z-Anatomy",
+  "nameEn": "Descending part of iliofemoral ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_iliolumbar_ligament_l",
+  "source": "Z-Anatomy",
+  "nameEn": "Iliolumbar ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_iliolumbar_ligament_r",
+  "source": "Z-Anatomy",
+  "nameEn": "Iliolumbar ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_interosseous_sacro_iliac_ligament_l",
+  "source": "Z-Anatomy",
+  "nameEn": "Interosseous sacro-iliac ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_interosseous_sacro_iliac_ligament_r",
+  "source": "Z-Anatomy",
+  "nameEn": "Interosseous sacro-iliac ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_ischiofemoral_ligament_l",
+  "source": "Z-Anatomy",
+  "nameEn": "Ischiofemoral ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_ischiofemoral_ligament_r",
+  "source": "Z-Anatomy",
+  "nameEn": "Ischiofemoral ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_middle_layer_of_thoracolumbar_fascia_l",
+  "source": "Z-Anatomy",
+  "nameEn": "Middle layer of thoracolumbar fascia",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_middle_layer_of_thoracolumbar_fascia_r",
+  "source": "Z-Anatomy",
+  "nameEn": "Middle layer of thoracolumbar fascia",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_obturator_membrane_l",
+  "source": "Z-Anatomy",
+  "nameEn": "Obturator membrane",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_obturator_membrane_r",
+  "source": "Z-Anatomy",
+  "nameEn": "Obturator membrane",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_posterior_layer_of_thoracolumbar_fascia_l",
+  "source": "Z-Anatomy",
+  "nameEn": "Posterior layer of thoracolumbar fascia",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_posterior_layer_of_thoracolumbar_fascia_r",
+  "source": "Z-Anatomy",
+  "nameEn": "Posterior layer of thoracolumbar fascia",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_posterior_sacro_iliac_ligament_l",
+  "source": "Z-Anatomy",
+  "nameEn": "Posterior sacro-iliac ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_posterior_sacro_iliac_ligament_r",
+  "source": "Z-Anatomy",
+  "nameEn": "Posterior sacro-iliac ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_pubofemoral_ligament_l",
+  "source": "Z-Anatomy",
+  "nameEn": "Pubofemoral ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_pubofemoral_ligament_r",
+  "source": "Z-Anatomy",
+  "nameEn": "Pubofemoral ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_sacrospinous_ligament_l",
+  "source": "Z-Anatomy",
+  "nameEn": "Sacrospinous ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_sacrospinous_ligament_r",
+  "source": "Z-Anatomy",
+  "nameEn": "Sacrospinous ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_sacrotuberous_ligament_l",
+  "source": "Z-Anatomy",
+  "nameEn": "Sacrotuberous ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_sacrotuberous_ligament_r",
+  "source": "Z-Anatomy",
+  "nameEn": "Sacrotuberous ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_transverse_part_of_iliofemoral_ligament_l",
+  "source": "Z-Anatomy",
+  "nameEn": "Transverse part of iliofemoral ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
+ },
+ {
+  "id": "ZA_transverse_part_of_iliofemoral_ligament_r",
+  "source": "Z-Anatomy",
+  "nameEn": "Transverse part of iliofemoral ligament",
+  "note": "Z-Anatomy(CC BY-SA 4.0)에서 가져온 인대·근막. BodyParts3D 좌표계로 변환함(평균 오차 3.9mm)"
  }
 ]

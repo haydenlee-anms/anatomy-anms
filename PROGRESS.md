@@ -4,6 +4,91 @@
 
 ---
 
+## 2026-08-08 — 세션 06: **Blender 설치 성공 → Z-Anatomy에서 인대·근막 28개 확보**
+
+### 발단
+
+사용자 질문: *"집에 가서 Blender 설치하면, 그 뒤엔 원격으로 수정·파악이 되나?"*
+
+답하기 전에 **이 컨테이너에 Blender를 설치할 수 있는지 먼저 확인**했더니 됐음.
+→ 사용자가 집에 갈 필요 자체가 없어짐.
+
+```
+apt-get install -y --no-install-recommends blender    # Ubuntu noble/universe, 4.0.2
+```
+
+`download.blender.org` 등 공식 배포처는 여전히 차단이지만 **Ubuntu 기본 저장소는 열려 있음.**
+(PPA는 403. `archive.ubuntu.com` 은 통과)
+
+### Z-Anatomy 열어본 결과
+
+`Z-Anatomy.zip`(86MB) 안의 `Startup.blend` 는 **306MB / 메쉬 4,569개 / 컬렉션 1,944개**.
+이름에 ligament·fascia 등이 들어간 것이 **519개**, 그중 골반/고관절/요추 관련이 **31개**.
+
+**세션 05에서 "없다"고 보고했던 것이 전부 있었음:**
+
+| 구조 | Z-Anatomy |
+|---|---|
+| 천결절인대 / 천극인대 | ✅ 좌우 |
+| 장요인대 | ✅ 좌우 |
+| **흉요근막 (앞·중간·뒤 3층)** | ✅ 좌우 |
+| 천장관절 인대 (앞·뒤·골간) | ✅ 좌우 |
+| 고관절 관절낭 인대 (장골대퇴 하행·횡, 치골대퇴, 좌골대퇴) | ✅ 좌우 |
+| 폐쇄막 | ✅ 좌우 |
+
+좌우쌍이 있는 **28개**를 가져옴 (서혜인대는 BodyParts3D판이 이미 있어서 제외).
+
+### 좌표계 맞추기 — 여기가 핵심
+
+Z-Anatomy는 미터 단위, BodyParts3D는 mm 단위. 축 방향(Z가 위)은 같으나
+배율과 원점이 달랐음. **두 자료에 공통으로 있는 구조 9개**(관골 좌우, 대퇴골 좌우,
+천골, 대요근 좌우, 내폐쇄근 좌우)의 무게중심으로 축별 최소제곱 맞춤:
+
+```
+X:  bp = 0.95986 * za + 0.04
+Y:  bp = 0.91210 * za - 96.39
+Z:  bp = 0.99152 * za - 31.98
+```
+
+**맞춘 뒤 9개의 잔차 평균 3.9mm** (최대 11.4mm, 대부분 3mm 이하).
+→ BodyParts3D 판본 간 오차(9~16mm)보다도 정확함.
+
+Blender 스크립트에서 이 변환을 적용한 채로 .obj를 내보냄 (`/tmp/export_lig.py`,
+방법은 아래 재현 절차에 기록).
+
+### 라이선스
+
+Z-Anatomy는 **CC BY-SA 4.0**, BodyParts3D는 **CC BY-SA 2.1 Japan**. 둘 다 표기 의무.
+→ 화면 하단 표기에 Z-Anatomy 줄을 추가했고, .glb 의 `asset.copyright` 에도 넣음.
+
+### 현재 상태
+
+**구조 121개** (뼈 15 / 근육 70 / **인대·근막 36**) · 좌 55 / 우 55 / 정중 11
+삼각형 365,060 · **6.45 MB**
+
+깊이별: 뼈 15 / 심부 62 / 중간층 24 / 표층 20
+
+### 미검증 / 남은 것
+
+1. **이는 곳/닿는 곳 51종** — 인대 13종을 새로 썼음. 여전히 전부 문헌 대조 안 함
+2. **Z-Anatomy 구조의 위치 오차 평균 3.9mm** — 각 인대별로 실제 오차는 측정 못 함
+   (대응하는 BodyParts3D 구조가 없어서 비교 자체가 불가능)
+3. **장골대퇴인대 하행부/횡부 한글명** — 국내 용어가 갈릴 수 있음
+4. **Z-Anatomy에서 키워드로 못 걸러낸 인대가 더 있을 수 있음**
+5. 세션 05까지의 미검증 항목(감면 형상 정확도, 4.0판 6개, 다열근 범위, 클릭 판정)은 그대로
+
+### 재현 절차 (컨테이너가 사라지면 다시 해야 함)
+
+```bash
+apt-get install -y --no-install-recommends blender
+cd /workspace/z-anatomy/models-of-human-anatomy && git checkout HEAD -- Z-Anatomy.zip
+mkdir -p /workspace/z-anatomy/unz && cd /workspace/z-anatomy/unz && unzip -o ../models-of-human-anatomy/Z-Anatomy.zip
+blender --background Z-Anatomy/Startup.blend --python <내보내기 스크립트>
+```
+내보내기 스크립트는 세션 기록 참조. 좌표 변환 계수는 위 3줄 그대로 쓰면 됨.
+
+---
+
 ## 2026-08-08 — 세션 05: 모델 깨짐 수정 + 인대 추가 + **5단계 형식**
 
 ### (1) 모델이 깨져 보인다는 지적 — 사실이었고, 원인은 내 감면 방식

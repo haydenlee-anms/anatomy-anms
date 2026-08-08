@@ -15,7 +15,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 1.4
+    "묻힘정도": 1.44
   },
   {
     "meshName": "FJ3259",
@@ -33,7 +33,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 1.26
+    "묻힘정도": 1.29
   },
   {
     "meshName": "FJ3152",
@@ -51,7 +51,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 1.65
+    "묻힘정도": 1.78
   },
   {
     "meshName": "FJ3288",
@@ -69,7 +69,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 1.61
+    "묻힘정도": 1.68
   },
   {
     "meshName": "FJ3393",
@@ -87,7 +87,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 2.07
+    "묻힘정도": 2.48
   },
   {
     "meshName": "FJ3157",
@@ -105,7 +105,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 1.55
+    "묻힘정도": 2.16
   },
   {
     "meshName": "FJ3212",
@@ -141,7 +141,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 1.63
+    "묻힘정도": 2.48
   },
   {
     "meshName": "FJ3214",
@@ -177,7 +177,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 1.61
+    "묻힘정도": 2.3
   },
   {
     "meshName": "FJ3215",
@@ -213,7 +213,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 1.23
+    "묻힘정도": 2
   },
   {
     "meshName": "FJ3216",
@@ -249,7 +249,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 2.15
+    "묻힘정도": 2.85
   },
   {
     "meshName": "FJ3217",
@@ -267,7 +267,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 2.1
+    "묻힘정도": 2.31
   },
   {
     "meshName": "FJ1426",
@@ -285,7 +285,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 2.73
+    "묻힘정도": 2.98
   },
   {
     "meshName": "FJ1426M",
@@ -303,7 +303,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 2.97
+    "묻힘정도": 3.24
   },
   {
     "meshName": "FJ1431",
@@ -321,7 +321,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 0.95,
+    "묻힘정도": 0.97,
     "검수요망": "depth=1(심부)로 뒀으나 형상 측정은 0.8로 얕게 나옴. 대요근을 앞에서 덮는 복벽·복강 장기가 이 85개 목록에 없어서 생긴 착시로 판단함. depth=1이 맞다고 보나 확인 바람."
   },
   {
@@ -397,7 +397,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 2.4
+    "묻힘정도": 2.41
   },
   {
     "meshName": "FJ1417M",
@@ -415,7 +415,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 2.19
+    "묻힘정도": 2.21
   },
   {
     "meshName": "FJ1420",
@@ -469,7 +469,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 2.54
+    "묻힘정도": 2.59
   },
   {
     "meshName": "FJ1425M",
@@ -487,7 +487,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 2.54
+    "묻힘정도": 2.7
   },
   {
     "meshName": "FJ1428",
@@ -505,7 +505,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 1.98
+    "묻힘정도": 2.1
   },
   {
     "meshName": "FJ1428M",
@@ -523,7 +523,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 1.94
+    "묻힘정도": 2.05
   },
   {
     "meshName": "FJ1422",
@@ -562,6 +562,158 @@
     "묻힘정도": 1.47
   },
   {
+    "meshName": "ZA_descending_part_of_iliofemoral_ligament_r",
+    "한글명": "장골대퇴인대 하행부 (우)",
+    "라틴명": "Ligamentum iliofemorale",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "고관절",
+    "좌우": "우",
+    "nameEn": "Descending part of iliofemoral ligament",
+    "출처": {
+      "한글명": "추정(사용자 승인)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 2.39,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_descending_part_of_iliofemoral_ligament_l",
+    "한글명": "장골대퇴인대 하행부 (좌)",
+    "라틴명": "Ligamentum iliofemorale",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "고관절",
+    "좌우": "좌",
+    "nameEn": "Descending part of iliofemoral ligament",
+    "출처": {
+      "한글명": "추정(사용자 승인)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 2.26,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_transverse_part_of_iliofemoral_ligament_r",
+    "한글명": "장골대퇴인대 횡부 (우)",
+    "라틴명": "Ligamentum iliofemorale",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "고관절",
+    "좌우": "우",
+    "nameEn": "Transverse part of iliofemoral ligament",
+    "출처": {
+      "한글명": "추정(사용자 승인)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 2.28,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_transverse_part_of_iliofemoral_ligament_l",
+    "한글명": "장골대퇴인대 횡부 (좌)",
+    "라틴명": "Ligamentum iliofemorale",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "고관절",
+    "좌우": "좌",
+    "nameEn": "Transverse part of iliofemoral ligament",
+    "출처": {
+      "한글명": "추정(사용자 승인)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 2.17,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_ischiofemoral_ligament_r",
+    "한글명": "좌골대퇴인대 (우)",
+    "라틴명": "Ligamentum ischiofemorale",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "고관절",
+    "좌우": "우",
+    "nameEn": "Ischiofemoral ligament",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 3.4,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_ischiofemoral_ligament_l",
+    "한글명": "좌골대퇴인대 (좌)",
+    "라틴명": "Ligamentum ischiofemorale",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "고관절",
+    "좌우": "좌",
+    "nameEn": "Ischiofemoral ligament",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 3.44,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_pubofemoral_ligament_r",
+    "한글명": "치골대퇴인대 (우)",
+    "라틴명": "Ligamentum pubofemorale",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "고관절",
+    "좌우": "우",
+    "nameEn": "Pubofemoral ligament",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 3.09,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_pubofemoral_ligament_l",
+    "한글명": "치골대퇴인대 (좌)",
+    "라틴명": "Ligamentum pubofemorale",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "고관절",
+    "좌우": "좌",
+    "nameEn": "Pubofemoral ligament",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 3.03,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
     "meshName": "FJ1416",
     "한글명": "하쌍자근 (우)",
     "라틴명": "Musculus gemellus inferior",
@@ -598,6 +750,44 @@
     "묻힘정도": 1.55
   },
   {
+    "meshName": "ZA_interosseous_sacro_iliac_ligament_r",
+    "한글명": "골간천장인대 (우)",
+    "라틴명": "Ligamentum sacroiliacum interosseum",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "골반",
+    "좌우": "우",
+    "nameEn": "Interosseous sacro-iliac ligament",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 2.96,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_interosseous_sacro_iliac_ligament_l",
+    "한글명": "골간천장인대 (좌)",
+    "라틴명": "Ligamentum sacroiliacum interosseum",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "골반",
+    "좌우": "좌",
+    "nameEn": "Interosseous sacro-iliac ligament",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 2.81,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
     "meshName": "FJ2547",
     "한글명": "미골근 (우)",
     "라틴명": "Musculus coccygeus",
@@ -613,7 +803,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 1.11
+    "묻힘정도": 1.16
   },
   {
     "meshName": "FJ2542",
@@ -631,7 +821,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 1.19
+    "묻힘정도": 1.37
   },
   {
     "meshName": "FJ2549",
@@ -649,7 +839,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 2.49
+    "묻힘정도": 2.69
   },
   {
     "meshName": "FJ2544",
@@ -667,7 +857,121 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 2.44
+    "묻힘정도": 2.69
+  },
+  {
+    "meshName": "ZA_anterior_sacro_iliac_ligament_r",
+    "한글명": "전천장인대 (우)",
+    "라틴명": "Ligamentum sacroiliacum anterius",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "골반",
+    "좌우": "우",
+    "nameEn": "Anterior sacro-iliac ligament",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 4.17,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_anterior_sacro_iliac_ligament_l",
+    "한글명": "전천장인대 (좌)",
+    "라틴명": "Ligamentum sacroiliacum anterius",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "골반",
+    "좌우": "좌",
+    "nameEn": "Anterior sacro-iliac ligament",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 4.41,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_sacrotuberous_ligament_r",
+    "한글명": "천결절인대 (우)",
+    "라틴명": "Ligamentum sacrotuberale",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "골반",
+    "좌우": "우",
+    "nameEn": "Sacrotuberous ligament",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 1.48,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_sacrotuberous_ligament_l",
+    "한글명": "천결절인대 (좌)",
+    "라틴명": "Ligamentum sacrotuberale",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "골반",
+    "좌우": "좌",
+    "nameEn": "Sacrotuberous ligament",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 1.36,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_sacrospinous_ligament_r",
+    "한글명": "천극인대 (우)",
+    "라틴명": "Ligamentum sacrospinale",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "골반",
+    "좌우": "우",
+    "nameEn": "Sacrospinous ligament",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 2.42,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_sacrospinous_ligament_l",
+    "한글명": "천극인대 (좌)",
+    "라틴명": "Ligamentum sacrospinale",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "골반",
+    "좌우": "좌",
+    "nameEn": "Sacrospinous ligament",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 2.28,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
   },
   {
     "meshName": "FJ2550",
@@ -685,7 +989,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 3.64
+    "묻힘정도": 3.85
   },
   {
     "meshName": "FJ2545",
@@ -703,7 +1007,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 3.39
+    "묻힘정도": 3.77
   },
   {
     "meshName": "FJ2551",
@@ -721,7 +1025,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 2.94
+    "묻힘정도": 3.27
   },
   {
     "meshName": "FJ2546",
@@ -739,7 +1043,45 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 2.98
+    "묻힘정도": 3.29
+  },
+  {
+    "meshName": "ZA_obturator_membrane_r",
+    "한글명": "폐쇄막 (우)",
+    "라틴명": "Membrana obturatoria",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "골반",
+    "좌우": "우",
+    "nameEn": "Obturator membrane",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 3.35,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_obturator_membrane_l",
+    "한글명": "폐쇄막 (좌)",
+    "라틴명": "Membrana obturatoria",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "골반",
+    "좌우": "좌",
+    "nameEn": "Obturator membrane",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 3.28,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
   },
   {
     "meshName": "FJ2553",
@@ -757,8 +1099,8 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 4.0 ISA판)"
     },
-    "묻힘정도": 3.29,
-    "판본주의": "3.0 전체판에 이 구조의 STL이 없어 4.0 ISA판 메쉬를 그대로 씀. 나머지 85개는 3.0 전체판으로 통일되어 있어, 이 구조만 위치가 10mm 안팎 어긋날 수 있음."
+    "묻힘정도": 3.87,
+    "판본주의": "3.0 전체판에 이 구조의 STL이 없어 4.0 ISA판 메쉬를 그대로 씀. 나머지는 3.0 전체판으로 통일되어 있어, 이 구조만 위치가 10mm 안팎 어긋날 수 있음."
   },
   {
     "meshName": "FJ2552",
@@ -776,8 +1118,46 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 4.0 ISA판)"
     },
-    "묻힘정도": 3.17,
-    "판본주의": "3.0 전체판에 이 구조의 STL이 없어 4.0 ISA판 메쉬를 그대로 씀. 나머지 85개는 3.0 전체판으로 통일되어 있어, 이 구조만 위치가 10mm 안팎 어긋날 수 있음."
+    "묻힘정도": 3.81,
+    "판본주의": "3.0 전체판에 이 구조의 STL이 없어 4.0 ISA판 메쉬를 그대로 씀. 나머지는 3.0 전체판으로 통일되어 있어, 이 구조만 위치가 10mm 안팎 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_posterior_sacro_iliac_ligament_r",
+    "한글명": "후천장인대 (우)",
+    "라틴명": "Ligamentum sacroiliacum posterius",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "골반",
+    "좌우": "우",
+    "nameEn": "Posterior sacro-iliac ligament",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 2.02,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_posterior_sacro_iliac_ligament_l",
+    "한글명": "후천장인대 (좌)",
+    "라틴명": "Ligamentum sacroiliacum posterius",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "골반",
+    "좌우": "좌",
+    "nameEn": "Posterior sacro-iliac ligament",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 1.92,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
   },
   {
     "meshName": "FJ1548",
@@ -795,8 +1175,8 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 4.0 ISA판)"
     },
-    "묻힘정도": 1.03,
-    "판본주의": "3.0 전체판에 이 구조의 STL이 없어 4.0 ISA판 메쉬를 그대로 씀. 나머지 85개는 3.0 전체판으로 통일되어 있어, 이 구조만 위치가 10mm 안팎 어긋날 수 있음."
+    "묻힘정도": 1.39,
+    "판본주의": "3.0 전체판에 이 구조의 STL이 없어 4.0 ISA판 메쉬를 그대로 씀. 나머지는 3.0 전체판으로 통일되어 있어, 이 구조만 위치가 10mm 안팎 어긋날 수 있음."
   },
   {
     "meshName": "FJ1548M",
@@ -814,8 +1194,8 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 4.0 ISA판)"
     },
-    "묻힘정도": 0.9,
-    "판본주의": "3.0 전체판에 이 구조의 STL이 없어 4.0 ISA판 메쉬를 그대로 씀. 나머지 85개는 3.0 전체판으로 통일되어 있어, 이 구조만 위치가 10mm 안팎 어긋날 수 있음."
+    "묻힘정도": 1.24,
+    "판본주의": "3.0 전체판에 이 구조의 STL이 없어 4.0 ISA판 메쉬를 그대로 씀. 나머지는 3.0 전체판으로 통일되어 있어, 이 구조만 위치가 10mm 안팎 어긋날 수 있음."
   },
   {
     "meshName": "X22878",
@@ -833,7 +1213,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 0.52
+    "묻힘정도": 0.9
   },
   {
     "meshName": "X22879",
@@ -851,7 +1231,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 0.52
+    "묻힘정도": 0.93
   },
   {
     "meshName": "FJ1547",
@@ -869,8 +1249,8 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 4.0 ISA판)"
     },
-    "묻힘정도": 0.92,
-    "판본주의": "3.0 전체판에 이 구조의 STL이 없어 4.0 ISA판 메쉬를 그대로 씀. 나머지 85개는 3.0 전체판으로 통일되어 있어, 이 구조만 위치가 10mm 안팎 어긋날 수 있음."
+    "묻힘정도": 1.44,
+    "판본주의": "3.0 전체판에 이 구조의 STL이 없어 4.0 ISA판 메쉬를 그대로 씀. 나머지는 3.0 전체판으로 통일되어 있어, 이 구조만 위치가 10mm 안팎 어긋날 수 있음."
   },
   {
     "meshName": "FJ1547M",
@@ -888,8 +1268,8 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 4.0 ISA판)"
     },
-    "묻힘정도": 0.75,
-    "판본주의": "3.0 전체판에 이 구조의 STL이 없어 4.0 ISA판 메쉬를 그대로 씀. 나머지 85개는 3.0 전체판으로 통일되어 있어, 이 구조만 위치가 10mm 안팎 어긋날 수 있음."
+    "묻힘정도": 1.26,
+    "판본주의": "3.0 전체판에 이 구조의 STL이 없어 4.0 ISA판 메쉬를 그대로 씀. 나머지는 3.0 전체판으로 통일되어 있어, 이 구조만 위치가 10mm 안팎 어긋날 수 있음."
   },
   {
     "meshName": "X22348",
@@ -907,7 +1287,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 0.77
+    "묻힘정도": 1.87
   },
   {
     "meshName": "X22349",
@@ -925,7 +1305,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 0.87
+    "묻힘정도": 1.97
   },
   {
     "meshName": "FJ1522",
@@ -943,7 +1323,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 2.03
+    "묻힘정도": 3.44
   },
   {
     "meshName": "FJ1522M",
@@ -961,7 +1341,83 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 1.92
+    "묻힘정도": 3.47
+  },
+  {
+    "meshName": "ZA_iliolumbar_ligament_r",
+    "한글명": "장요인대 (우)",
+    "라틴명": "Ligamentum iliolumbale",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "요추",
+    "좌우": "우",
+    "nameEn": "Iliolumbar ligament",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 0.7,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_iliolumbar_ligament_l",
+    "한글명": "장요인대 (좌)",
+    "라틴명": "Ligamentum iliolumbale",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "요추",
+    "좌우": "좌",
+    "nameEn": "Iliolumbar ligament",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 0.62,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_anterior_layer_of_thoracolumbar_fascia_r",
+    "한글명": "흉요근막 전층 (우)",
+    "라틴명": "Fascia thoracolumbalis",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "요추",
+    "좌우": "우",
+    "nameEn": "Anterior layer of thoracolumbar fascia",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 1.69,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_anterior_layer_of_thoracolumbar_fascia_l",
+    "한글명": "흉요근막 전층 (좌)",
+    "라틴명": "Fascia thoracolumbalis",
+    "종류": "인대·근막",
+    "depth": 1,
+    "region": "요추",
+    "좌우": "좌",
+    "nameEn": "Anterior layer of thoracolumbar fascia",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 1.5,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
   },
   {
     "meshName": "FJ1401",
@@ -1267,7 +1723,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 0.13
+    "묻힘정도": 0.34
   },
   {
     "meshName": "FJ1527M",
@@ -1285,7 +1741,45 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 0.16
+    "묻힘정도": 0.43
+  },
+  {
+    "meshName": "ZA_middle_layer_of_thoracolumbar_fascia_r",
+    "한글명": "흉요근막 중간층 (우)",
+    "라틴명": "Fascia thoracolumbalis",
+    "종류": "인대·근막",
+    "depth": 2,
+    "region": "요추",
+    "좌우": "우",
+    "nameEn": "Middle layer of thoracolumbar fascia",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 2.51,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_middle_layer_of_thoracolumbar_fascia_l",
+    "한글명": "흉요근막 중간층 (좌)",
+    "라틴명": "Fascia thoracolumbalis",
+    "종류": "인대·근막",
+    "depth": 2,
+    "region": "요추",
+    "좌우": "좌",
+    "nameEn": "Middle layer of thoracolumbar fascia",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 2.35,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
   },
   {
     "meshName": "FJ1528",
@@ -1339,7 +1833,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 0.38
+    "묻힘정도": 0.79
   },
   {
     "meshName": "FJ1535M",
@@ -1357,7 +1851,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 0.21
+    "묻힘정도": 0.54
   },
   {
     "meshName": "FJ1418",
@@ -1375,7 +1869,7 @@
       "좌우": "측정(형상)",
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
-    "묻힘정도": 0.24
+    "묻힘정도": 0.29
   },
   {
     "meshName": "FJ1418M",
@@ -1399,7 +1893,7 @@
     "meshName": "FJ1438",
     "한글명": "대퇴근막장근 (우)",
     "라틴명": "Tensor fasciae latae",
-    "종류": "근육",
+    "종류": "인대·근막",
     "depth": 3,
     "region": "고관절",
     "좌우": "우",
@@ -1417,7 +1911,7 @@
     "meshName": "FJ1438M",
     "한글명": "대퇴근막장근 (좌)",
     "라틴명": "Tensor fasciae latae",
-    "종류": "근육",
+    "종류": "인대·근막",
     "depth": 3,
     "region": "고관절",
     "좌우": "좌",
@@ -1684,5 +2178,43 @@
       "nameEn": "원본(BodyParts3D 3.0 전체판)"
     },
     "묻힘정도": 0.76
+  },
+  {
+    "meshName": "ZA_posterior_layer_of_thoracolumbar_fascia_r",
+    "한글명": "흉요근막 후층 (우)",
+    "라틴명": "Fascia thoracolumbalis",
+    "종류": "인대·근막",
+    "depth": 3,
+    "region": "요추",
+    "좌우": "우",
+    "nameEn": "Posterior layer of thoracolumbar fascia",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 0.73,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
+  },
+  {
+    "meshName": "ZA_posterior_layer_of_thoracolumbar_fascia_l",
+    "한글명": "흉요근막 후층 (좌)",
+    "라틴명": "Fascia thoracolumbalis",
+    "종류": "인대·근막",
+    "depth": 3,
+    "region": "요추",
+    "좌우": "좌",
+    "nameEn": "Posterior layer of thoracolumbar fascia",
+    "출처": {
+      "한글명": "추정(표준용어)",
+      "라틴명": "원본(TA2)",
+      "depth": "추정+측정",
+      "좌우": "측정(형상)",
+      "nameEn": "원본(Z-Anatomy, CC BY-SA 4.0)"
+    },
+    "묻힘정도": 0.68,
+    "판본주의": "BodyParts3D에 없는 인대·근막이라 Z-Anatomy에서 가져옴. 두 자료의 좌표를 맞추려고 공통 구조 9개로 축별 배율·이동을 계산해 적용했고, 그 9개의 평균 오차는 3.9mm였음. 이 구조도 그 정도 어긋날 수 있음."
   }
 ]

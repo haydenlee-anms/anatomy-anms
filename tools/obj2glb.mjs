@@ -53,6 +53,21 @@ for (const id of ids) {
   if (!fs.existsSync(f)) { missing.push(id); continue; }
   const m = parseObj(fs.readFileSync(f, 'utf8'));
   brokenTotal += m.assumptionBroken;
+  // Z-Anatomy에서 뽑은 .obj 에는 법선이 없다. 없으면 면에서 계산한다.
+  if (m.nrm.length === 0) {
+    const nrm = new Float64Array(m.pos.length);
+    for (let t = 0; t < m.idx.length; t += 3) {
+      const a = m.idx[t] * 3, b = m.idx[t + 1] * 3, c = m.idx[t + 2] * 3;
+      const ux = m.pos[b] - m.pos[a], uy = m.pos[b + 1] - m.pos[a + 1], uz = m.pos[b + 2] - m.pos[a + 2];
+      const vx = m.pos[c] - m.pos[a], vy = m.pos[c + 1] - m.pos[a + 1], vz = m.pos[c + 2] - m.pos[a + 2];
+      const nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx;
+      for (const i of [a, b, c]) { nrm[i] += nx; nrm[i + 1] += ny; nrm[i + 2] += nz; }
+    }
+    for (let i = 0; i < nrm.length; i += 3) {
+      const l = Math.hypot(nrm[i], nrm[i + 1], nrm[i + 2]) || 1;
+      m.nrm.push(nrm[i] / l, nrm[i + 1] / l, nrm[i + 2] / l);
+    }
+  }
   if (m.nrm.length !== m.pos.length) {
     console.error(`  ! ${id}: 정점 ${m.pos.length / 3}개인데 법선 ${m.nrm.length / 3}개 — 건너뜀`);
     continue;
@@ -139,7 +154,8 @@ const json = {
   asset: {
     version: '2.0',
     generator: 'anatomy-anms obj2glb',
-    copyright: 'BodyParts3D, (c) The Database Center for Life Science licensed under CC Attribution-Share Alike 2.1 Japan',
+    copyright: 'BodyParts3D, (c) The Database Center for Life Science licensed under CC Attribution-Share Alike 2.1 Japan'
+      + ' | Ligaments and fasciae from Z-Anatomy (https://z-anatomy.com), CC BY-SA 4.0',
   },
   scene: 0,
   scenes: [{ nodes: nodes.map((_, i) => i) }],
