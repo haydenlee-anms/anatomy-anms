@@ -258,12 +258,32 @@ UI 예쁘게 만들지 마라. 검은 배경에 모델만 있으면 된다.
 
 → **.glb가 25MB를 넘으면 배포는 GitHub Pages로 간다.** 100MB를 넘으면 Git LFS 또는 부위별 파일 분할이 필요하고, 그건 별도 판단 사항이므로 진행 전에 보고할 것.
 
-## B-4. 레포 공개 여부 → 문제 없음
+## B-4. 레포가 private임 → 배포가 막힘 (미해결)
 
-`haydenlee-anms/anatomy-anms`는 확인 결과 **public**임.
-GitHub Pages는 public 레포에서 무료 플랜으로 동작하므로 추가 결정 사항 없음.
-(참고: private으로 바꾸면 Pages에 유료 플랜이 필요해짐.)
+> 정정: 이 항목은 처음에 "public이라 문제 없음"이라고 잘못 적혀 있었음.
+> 인증이 걸린 경로로 확인해서 오판한 것. 2026-08-08 실제 확인 후 수정함.
 
-단, public이라는 건 **레포에 올리는 모든 게 인터넷에 공개된다**는 뜻임.
-`observations.jsonl`에 들어갈 내용은 사용자의 신체 관찰 기록이므로,
-5단계 전에 "이걸 공개 레포에 둘 것인가"를 사용자가 한 번 결정해야 함.
+`haydenlee-anms/anatomy-anms`는 **private**임. (계정의 public repo 수 = 0)
+
+**GitHub Pages는 비공개 레포에서 유료 플랜(Pro 이상)이 있어야 동작한다.**
+무료 플랜 + private = 배포 불가. 1단계 완료 조건("공개 URL")을 여기서 못 넘김.
+
+선택지 3개. 사용자가 골라야 함:
+
+| 안 | 내용 | 비용 | 걸리는 점 |
+|---|---|---|---|
+| **A** | 레포를 public으로 전환 | 무료 | 레포 내용이 전부 인터넷에 공개됨 |
+| **B** | GitHub Pro 구독 | 월 $4 수준 | 레포는 계속 비공개 |
+| **C** | Cloudflare Pages로 배포 | 무료 | 레포 비공개 유지 가능. 계정 생성·연결 필요 |
+
+**C안이 가능한 이유:** Cloudflare Pages의 파일당 25MB 제한에 걸릴 줄 알았으나,
+실제 변환 결과가 7.02MB라 여유 있게 통과함. (B-3의 우려는 해소됨)
+
+**A안을 고를 경우 반드시 같이 결정할 것:** public이면 레포에 올리는 모든 게 공개됨.
+`observations.jsonl`은 사용자의 신체 관찰 기록이므로, 5단계 전에
+"이걸 공개 레포에 둘 것인가"를 결정해야 함. (관찰 기록만 별도 비공개 레포로 빼는 방법도 있음)
+
+**워크플로 쪽 추가 사실:** `actions/configure-pages`의 `enablement: true`로
+Pages를 자동으로 켜려 했으나 `Resource not accessible by integration`으로 거부됨.
+기본 GITHUB_TOKEN에는 Pages 사이트 생성 권한이 없음.
+→ **어느 안을 고르든 Settings > Pages에서 사람이 한 번 켜야 함.**

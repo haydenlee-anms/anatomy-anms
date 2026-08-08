@@ -170,11 +170,16 @@
 | 스펙의 제약 | 판정 | 근거 |
 |---|---|---|
 | 태블릿 브라우저에서 열림 | ✅ 가능 | 면 33만은 모바일 GPU에 부담 없음 |
-| 공개 URL 배포 | ✅ 가능 | 레포가 public → GitHub Pages 무료 |
+| 공개 URL 배포 | ⛔ **막힘** | **레포가 private이고 무료 플랜이라 GitHub Pages 불가.** 아래 정정 참조 |
 | GitHub 파일 100MB 제한 | ✅ 통과 | 24.6MB, 변환 후 더 줄어듦 |
-| Cloudflare Pages 25MB 제한 | ⚠️ 아슬함 | 24.6MB → **GitHub Pages 권장** |
-| 로딩 5초 이내 | ✅ 가능 (추정) | .glb 변환 시 3~6MB 예상 **(추정치)** |
+| Cloudflare Pages 25MB 제한 | ✅ 통과 | 변환 후 7.02MB라 여유 있음 |
+| 로딩 5초 이내 | ✅ 가능 (추정) | 변환 결과 7.02MB. 실측은 배포 후 |
 | 두 번째 방문 빠름 | ✅ 가능 | 브라우저 캐시로 충분 |
+
+> **정정 (2026-08-08, 1단계 중 발견):** 이 표는 처음에 "레포가 public이라 Pages 무료"로
+> 적혀 있었으나 **틀렸다.** 레포는 private이고 계정은 무료 플랜이라 GitHub Pages를 쓸 수 없다.
+> 대안 3개(public 전환 / GitHub Pro / Cloudflare Pages)는 `CLAUDE.md` 부록 B-4 참조.
+> 변환 결과가 7.02MB로 나온 덕에 Cloudflare Pages(파일당 25MB)도 선택지에 들어왔다.
 
 ---
 
