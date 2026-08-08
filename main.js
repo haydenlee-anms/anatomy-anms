@@ -1,5 +1,7 @@
-// 4단계까지: 층 슬라이더 · 단면 · 검색 · 클릭 선택 · 정보 패널.
-// 메모(sites/observations)는 다음 단계다.
+// 전신 뷰어. 부위별로 나눠서 보는 것만 받아온다.
+//
+// 왜 나눠 받나: 전신을 한 파일로 만들면 태블릿에서 못 연다. 용량도 문제지만
+// 구조 하나당 그리기 명령이 한 번씩 나가서, 수천 개를 한 번에 켜면 프레임이 떨어진다.
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -9,7 +11,7 @@ const status = $('status');
 const BASE = import.meta.env.BASE_URL;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); // 태블릿에서 3배까지 가면 느려짐
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); // 태블릿 고밀도 화면에서 성능 확보
 renderer.setSize(innerWidth, innerHeight);
 document.body.appendChild(renderer.domElement);
 
@@ -17,122 +19,174 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000);
 
 const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.01, 100);
+camera.position.set(0, 0.9, 2.2);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
-controls.minDistance = 0.15;
-controls.maxDistance = 5;
+controls.minDistance = 0.05;
+controls.maxDistance = 8;
+controls.target.set(0, 0.9, 0);
 
 scene.add(new THREE.HemisphereLight(0xffffff, 0x222233, 1.4));
 const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(1, 1.5, 2); scene.add(key);
 const fill = new THREE.DirectionalLight(0xffffff, 0.7); fill.position.set(-1.5, 0, -1.5); scene.add(fill);
 
-// 전부 같은 색이면 층을 벗겨도 뼈까지 벗겨졌는지 눈으로 확인할 수 없다. 종류별로 나눈다.
+// 계통별로 색을 나눠야 층을 벗겼을 때 뭐가 남았는지 눈으로 안다
 const MAT = {
   '뼈':        new THREE.MeshStandardMaterial({ color: 0xe8e0d0, roughness: 0.85, side: THREE.DoubleSide }),
   '근육':      new THREE.MeshStandardMaterial({ color: 0xc74d47, roughness: 0.75, side: THREE.DoubleSide }),
-  '인대·근막': new THREE.MeshStandardMaterial({ color: 0xcfc6a8, roughness: 0.6, side: THREE.DoubleSide }),
+  '관절·인대': new THREE.MeshStandardMaterial({ color: 0xcfc6a8, roughness: 0.6, side: THREE.DoubleSide }),
+  '신경':      new THREE.MeshStandardMaterial({ color: 0xe0d24a, roughness: 0.5, side: THREE.DoubleSide }),
+  '부착부':    new THREE.MeshStandardMaterial({ color: 0x6fa8c7, roughness: 0.6, side: THREE.DoubleSide }),
   pick:        new THREE.MeshStandardMaterial({ color: 0xffd24a, roughness: 0.5, emissive: 0x553300, side: THREE.DoubleSide }),
 };
-const matOf = (info) => MAT[info?.종류] || MAT['근육'];
+const matOf = (i) => MAT[i?.종류] || MAT['근육'];
 
 const LAYER_LABEL = ['뼈만', '심부까지', '중간층까지', '표층까지(전체)'];
-const parts = [];      // { mesh, info }
-let attachments = {};
-let sites = [];        // 사용자가 정의한 부위
-let obs = [];          // 날짜 붙은 관찰 기록
+const REGION_LABEL = { trunk: '몸통', lower: '하지', upper: '상지', head: '머리·목' };
+
+let byMesh = new Map();          // meshName → 메타
+const parts = [];                // { mesh, info }
+const loaded = new Set();        // 이미 받은 부위
+const loading = new Set();
+const onRegions = new Set(['trunk']);
+const onSystems = new Set(['뼈', '근육', '관절·인대']);
 let selected = null;
-let box, size, center;
+
+const loader = new GLTFLoader();
+let attachments = {};   // 이는 곳 / 닿는 곳 (사람이 쓴 것. 미검증)
+let sites = [];         // 내가 정의한 부위
+let obs = [];           // 날짜 붙은 관찰 기록
 
 Promise.all([
   fetch(BASE + 'structures.json').then(r => r.json()),
-  fetch(BASE + 'attachments.json').then(r => r.json()),
+  fetch(BASE + 'attachments.json').then(r => r.json()).catch(() => ({})),
   fetch(BASE + 'sites.json').then(r => r.json()).catch(() => ({ sites: [] })),
-  // .jsonl 은 한 줄에 기록 하나. _주의 같은 메모 줄은 걸러낸다.
   fetch(BASE + 'observations.jsonl').then(r => r.text()).then(t =>
     t.split('\n').filter(l => l.trim()).map(l => { try { return JSON.parse(l); } catch { return null; } })
      .filter(o => o && o.date)).catch(() => []),
-  new GLTFLoader().loadAsync(BASE + 'pelvis.glb', (e) => {
-    if (e.total) status.textContent = `불러오는 중… ${Math.round((e.loaded / e.total) * 100)}%`;
-  }),
-]).then(([structures, atts, siteFile, observations, gltf]) => {
-  attachments = atts;
-  sites = siteFile.sites || [];
-  obs = observations;
-  const byMesh = new Map(structures.map(s => [s.meshName, s]));
-
-  gltf.scene.traverse((o) => {
-    if (!o.isMesh) return;
-    // .glb의 노드 이름이 structures.json의 meshName이다 (tools/obj2glb.mjs 참조)
-    const info = byMesh.get(o.name) || byMesh.get(o.parent?.name);
-    o.userData.info = info;
-    o.material = matOf(info);
-    parts.push({ mesh: o, info });
-  });
-  scene.add(gltf.scene);
-
-  box = new THREE.Box3().setFromObject(gltf.scene);
-  size = box.getSize(new THREE.Vector3());
-  center = box.getCenter(new THREE.Vector3());
-  controls.target.copy(center);
-  camera.position.set(center.x, center.y, center.z + Math.max(size.x, size.y) * 1.35);
-  controls.update();
-
-  status.remove();
-  $('panel').hidden = false;
+]).then(async ([list, atts, siteFile, observations]) => {
+  byMesh = new Map(list.map(s => [s.meshName, s]));
+  attachments = atts; sites = siteFile.sites || []; obs = observations;
   $('search').hidden = false;
-  applyLayer();
-  applyCut();
-}).catch((err) => { status.textContent = '불러오지 못했습니다.\n' + err; });
+  $('panel').hidden = false;
+  syncButtons();
+  await ensureRegion('trunk');
+  status.remove();
+  applyVisibility();
+  frameVisible();
+}).catch(e => { status.textContent = '불러오지 못했습니다.\n' + e; });
 
-// --- 층 슬라이더 --------------------------------------------------------
-// 값 3 = 전부 보임. 값을 낮추면 depth가 큰 것(표층)부터 사라진다.
-function applyLayer() {
+// 보이는 것 전체가 화면에 들어오도록 카메라를 맞춘다
+function frameVisible() {
+  const box = new THREE.Box3();
+  for (const p of parts) if (p.mesh.visible) box.expandByObject(p.mesh);
+  if (box.isEmpty()) return;
+  const size = box.getSize(new THREE.Vector3());
+  const c = box.getCenter(new THREE.Vector3());
+  controls.target.copy(c);
+  camera.position.set(c.x, c.y, c.z + Math.max(size.x, size.y) * 1.3);
+  controls.update();
+}
+
+// --- 부위 로딩 ----------------------------------------------------------
+async function ensureRegion(r) {
+  if (loaded.has(r) || loading.has(r)) return;
+  loading.add(r);
+  const btn = document.querySelector(`#regions [data-r="${r}"]`);
+  if (btn) btn.classList.add('loading');
+  try {
+    const gltf = await loader.loadAsync(`${BASE}model/${r}.glb`);
+    gltf.scene.traverse((o) => {
+      if (!o.isMesh) return;
+      o.geometry.computeVertexNormals();   // 법선을 파일에 안 넣었다. 용량의 33%였다.
+      // three.js 가 노드 이름을 고쳐버리므로 extras 에 심어둔 원본 id 로 찾는다
+      const id = o.userData.id || o.parent?.userData?.id || o.name;
+      o.userData.id = id;
+      const info = byMesh.get(id);
+      o.userData.info = info;
+      o.material = matOf(info);
+      o.userData.region = r;
+      parts.push({ mesh: o, info, region: r });
+    });
+    scene.add(gltf.scene);
+    loaded.add(r);
+  } catch (e) {
+    console.error(r, e);
+    if (btn) btn.textContent = REGION_LABEL[r] + ' ✕';
+  } finally {
+    loading.delete(r);
+    if (btn) btn.classList.remove('loading');
+  }
+}
+
+// --- 보이기 규칙 --------------------------------------------------------
+// 부위가 켜져 있고, 계통이 켜져 있고, 층 슬라이더보다 얕아야 보인다
+function applyVisibility() {
   const v = +$('layer').value;
-  for (const p of parts) p.mesh.visible = (p.info?.depth ?? 3) <= v;
+  for (const p of parts) {
+    p.mesh.visible = onRegions.has(p.region)
+      && onSystems.has(p.info?.종류)
+      && (p.info?.depth ?? 2) <= v;
+  }
   $('layerOut').textContent = LAYER_LABEL[v];
 }
-$('layer').addEventListener('input', applyLayer);
+$('layer').addEventListener('input', applyVisibility);
+
+function syncButtons() {
+  for (const b of document.querySelectorAll('#regions button'))
+    b.setAttribute('aria-pressed', String(onRegions.has(b.dataset.r)));
+  for (const b of document.querySelectorAll('#systems button'))
+    b.setAttribute('aria-pressed', String(onSystems.has(b.dataset.s)));
+}
+for (const b of document.querySelectorAll('#regions button')) {
+  b.addEventListener('click', async () => {
+    const r = b.dataset.r;
+    if (onRegions.has(r)) onRegions.delete(r); else { onRegions.add(r); await ensureRegion(r); }
+    syncButtons(); applyVisibility();
+  });
+}
+for (const b of document.querySelectorAll('#systems button')) {
+  b.addEventListener('click', () => {
+    const s = b.dataset.s;
+    if (onSystems.has(s)) onSystems.delete(s); else onSystems.add(s);
+    syncButtons(); applyVisibility();
+  });
+}
 
 // --- 단면 자르기 --------------------------------------------------------
-const AXIS = {
-  x: new THREE.Vector3(-1, 0, 0),   // 세로로 갈라서 좌우 단면
-  y: new THREE.Vector3(0, -1, 0),   // 가로로 잘라서 위아래 단면
-  z: new THREE.Vector3(0, 0, -1),   // 앞뒤 단면
-};
+const AXIS = { x: new THREE.Vector3(-1, 0, 0), y: new THREE.Vector3(0, -1, 0), z: new THREE.Vector3(0, 0, -1) };
 const plane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0);
-let axis = 'off';
-let flip = 1;   // 자른 뒤 어느 쪽을 남길지
+let axis = 'off', flip = 1;
 
 function applyCut() {
-  if (axis === 'off' || !box) { renderer.clippingPlanes = []; $('cutRow').hidden = true; return; }
+  if (axis === 'off') { renderer.clippingPlanes = []; $('cutRow').hidden = true; return; }
   $('cutRow').hidden = false;
+  const box = new THREE.Box3();
+  for (const p of parts) if (p.mesh.visible) box.expandByObject(p.mesh);
+  if (box.isEmpty()) return;
   plane.normal.copy(AXIS[axis]).multiplyScalar(flip);
   const t = +$('cut').value / 1000;
-  const at = box.min[axis] + (box.max[axis] - box.min[axis]) * t;   // 슬라이더 0~1 → 축의 최소~최대
+  const at = box.min[axis] + (box.max[axis] - box.min[axis]) * t;
   plane.constant = -plane.normal[axis] * at;
   renderer.clippingPlanes = [plane];
   $('cutOut').textContent = `${Math.round(t * 100)}%`;
 }
 $('cut').addEventListener('input', applyCut);
 $('flip').addEventListener('click', () => { flip *= -1; applyCut(); });
-for (const b of document.querySelectorAll('.btns button')) {
+for (const b of document.querySelectorAll('#axes button')) {
   b.addEventListener('click', () => {
     axis = b.dataset.axis;
-    for (const o of document.querySelectorAll('.btns button')) o.setAttribute('aria-pressed', String(o === b));
+    for (const o of document.querySelectorAll('#axes button')) o.setAttribute('aria-pressed', String(o === b));
     applyCut();
   });
 }
 
 // --- 선택과 정보 패널 ---------------------------------------------------
-// 이는곳/닿는곳을 찾을 때 쓰는 키. 좌/우와 "long head of" 같은 수식을 뗀다.
-function attachKey(nameEn) {
-  return (nameEn || '').toLowerCase()
-    .replace(/\b(right|left)\b/g, '')
-    .replace(/^(long|short|oblique|transverse)\s+head\s+of\s+/, '')
-    .replace(/\s+/g, ' ').trim();
-}
+const esc = (t) => String(t ?? '').replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
 
-const esc = (t) => String(t).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+function label(info, meshName) {
+  return info?.한글명 || info?.영문명 || meshName;
+}
 
 function select(part) {
   if (selected) selected.mesh.material = matOf(selected.info);
@@ -141,40 +195,42 @@ function select(part) {
   part.mesh.material = MAT.pick;
 
   const s = part.info;
-  $('iName').textContent = s?.한글명 || part.mesh.name;
+  $('iName').textContent = label(s, part.mesh.userData.id);
   $('iLatin').textContent = s?.라틴명 || '';
 
   const rows = [];
   const add = (k, v) => { if (v) rows.push(`<dt>${k}</dt><dd>${v}</dd>`); };
-  add('영문명', esc(s?.nameEn || ''));
-  add('종류 / 부위 / 층', s ? `${s.종류} · ${s.region} · ${LAYER_LABEL[s.depth].replace('까지', '')}` : '');
+  add('영문명', esc(s?.영문명));
+  add('계통 / 부위', s ? `${esc(s.종류)} · ${esc(REGION_LABEL[s.부위] || s.부위)}` : '');
+  add('세부 부위', esc(s?.세부부위));
+  add('좌우', esc(s?.좌우));
+  add('mesh', `<code>${esc(part.mesh.userData.id)}</code>`);
 
-  const a = attachments[attachKey(s?.nameEn)];
-  add('이는 곳', a && esc(a.이는곳));
-  add('닿는 곳', a && esc(a.닿는곳));
-  add('비고', a?.비고 && esc(a.비고));
-  add('mesh', `<code>${esc(part.mesh.name)}</code>`);
-
+  // 이는 곳 / 닿는 곳 — 골반·고관절·요추 것만 채워져 있다
+  // Z-Anatomy는 'X muscle' 로 부르는데 이는곳/닿는곳 표는 그냥 'X' 로 되어 있다
+  const a = attachments[(s?.영문명 || '').toLowerCase().replace(/\s+muscle$/, '')];
   let html = rows.join('');
   if (a) {
-    html += `<div class="warn">⚠ <b>미검증</b> — 이는 곳/닿는 곳은 3D 데이터에 없는 정보라
-             Claude가 작성했고 문헌 대조를 거치지 않았습니다.</div>`;
-  } else if (s && s.depth > 0) {
-    html += `<div class="warn">이 구조의 이는 곳/닿는 곳은 아직 안 채워져 있습니다.</div>`;
+    html = `<dt>이는 곳</dt><dd>${esc(a.이는곳)}</dd><dt>닿는 곳</dt><dd>${esc(a.닿는곳)}</dd>`
+         + (a.비고 ? `<dt>비고</dt><dd>${esc(a.비고)}</dd>` : '') + html
+         + `<div class="warn">⚠ <b>미검증</b> — 이는 곳/닿는 곳은 3D 데이터에 없는 정보라
+            Claude가 작성했고 문헌 대조를 거치지 않았습니다.</div>`;
   }
-  if (s?.판본주의) html += `<div class="warn">📐 ${esc(s.판본주의)}</div>`;
-  html += notesHtml(part.mesh.name);
+  if (s && !s.한글명) {
+    html += `<div class="warn">한글명이 아직 없습니다. 전신으로 넓히면서 구조가 2천 개대가 되어,
+             사람이 확인한 것만 한글명을 넣고 나머지는 비워뒀습니다. 지어내지 않습니다.</div>`;
+  }
+  html += `<div class="warn">⚠ <b>층(depth)은 계통 기준 일괄 배정</b>입니다.
+           근육 하나하나의 깊이를 확인한 값이 아닙니다.</div>`;
+  html += notesHtml(part.mesh.userData.id);
   $('iBody').innerHTML = html;
   $('info').hidden = false;
 }
 
-// --- 내 메모 (읽기 전용) ------------------------------------------------
-// 이 구조를 가리키는 site 를 찾고, 그 site 의 관찰 기록을 날짜순으로 보여준다.
-// 쓰기 기능은 없다. 기록 추가는 Claude에게 말해서 파일에 넣는다.
+// 이 구조를 가리키는 site 를 찾아 관찰 기록을 날짜 역순으로 보여준다. 쓰기 기능은 없다.
 function notesHtml(meshName) {
   const mine = sites.filter(st => (st.refs || []).includes(meshName));
-  if (!mine.length) return '<dt>내 메모</dt><dd style="color:#777">이 구조에 연결된 기록 없음</dd>';
-
+  if (!mine.length) return '';
   let h = '';
   for (const st of mine) {
     const list = obs.filter(o => o.siteId === st.id).sort((x, y) => (x.date < y.date ? 1 : -1));
@@ -191,45 +247,49 @@ function notesHtml(meshName) {
 $('infoClose').addEventListener('click', () => select(null));
 
 // --- 클릭으로 선택 ------------------------------------------------------
-// 깊은 근육은 앞의 근육에 가려 안 잡히는 게 정상이다. 층 슬라이더로 벗기고 누른다.
 const ray = new THREE.Raycaster();
 let downAt = null;
 renderer.domElement.addEventListener('pointerdown', (e) => { downAt = { x: e.clientX, y: e.clientY }; });
 renderer.domElement.addEventListener('pointerup', (e) => {
   if (!downAt) return;
-  // 회전시키려고 끈 것과 구분: 조금이라도 움직였으면 선택하지 않는다
-  if (Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y) > 6) return;
-  ray.setFromCamera(
-    new THREE.Vector2((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1),
-    camera);
-  const vis = parts.filter(p => p.mesh.visible).map(p => p.mesh);
-  const hit = ray.intersectObjects(vis, false)[0];
+  if (Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y) > 6) return;  // 끌었으면 회전이다
+  ray.setFromCamera(new THREE.Vector2((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1), camera);
+  const hit = ray.intersectObjects(parts.filter(p => p.mesh.visible).map(p => p.mesh), false)[0];
   select(hit ? parts.find(p => p.mesh === hit.object) : null);
 });
 
 // --- 검색 --------------------------------------------------------------
+// 아직 안 받아온 부위의 구조도 찾아준다. 고르면 그 부위를 받아온다.
 $('q').addEventListener('input', () => {
   const q = $('q').value.trim().toLowerCase();
   const hits = $('hits');
   if (!q) { hits.hidden = true; hits.innerHTML = ''; return; }
-  const found = parts.filter(p => {
-    const s = p.info; if (!s) return false;
-    return (s.한글명 + ' ' + s.nameEn + ' ' + (s.라틴명 || '')).toLowerCase().includes(q);
-  }).slice(0, 12);
-
+  const found = [];
+  for (const s of byMesh.values()) {
+    if (`${s.한글명 || ''} ${s.영문명} ${s.라틴명 || ''}`.toLowerCase().includes(q)) found.push(s);
+    if (found.length >= 14) break;
+  }
   hits.innerHTML = found.length
-    ? found.map((p, i) => `<div data-i="${i}">${p.info.한글명}<div class="sub">${p.info.nameEn}</div></div>`).join('')
+    ? found.map((s, i) => `<div data-i="${i}">${esc(label(s, s.meshName))}
+        <div class="sub">${esc(s.영문명)} · ${esc(REGION_LABEL[s.부위] || s.부위)}</div></div>`).join('')
     : '<div class="sub" style="padding:9px 10px">없음</div>';
   hits.hidden = false;
   hits.querySelectorAll('[data-i]').forEach((el) => {
-    el.addEventListener('click', () => {
-      const p = found[+el.dataset.i];
-      // 가려져 있으면 안 보이니, 그 근육이 드러나는 깊이까지 층을 벗긴다
-      $('layer').value = String(p.info.depth);
-      applyLayer();
-      select(p);
-      hits.hidden = true;
-      $('q').blur();
+    el.addEventListener('click', async () => {
+      const s = found[+el.dataset.i];
+      onRegions.add(s.부위); onSystems.add(s.종류);
+      syncButtons();
+      await ensureRegion(s.부위);
+      $('layer').value = String(Math.max(+$('layer').value, s.depth));
+      applyVisibility();
+      const p = parts.find(x => x.mesh.userData.id === s.meshName);
+      if (p) {
+        select(p);
+        const c = new THREE.Box3().setFromObject(p.mesh).getCenter(new THREE.Vector3());
+        controls.target.copy(c);
+        controls.update();
+      }
+      hits.hidden = true; $('q').blur();
     });
   });
 });
@@ -239,6 +299,9 @@ addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(innerWidth, innerHeight);
 });
+
+// 검증용. 브라우저 콘솔에서 내부 상태를 볼 수 있게 열어둔다
+window.__dbg = { parts, scene, camera, controls, byMesh: () => byMesh };
 
 renderer.setAnimationLoop(() => {
   controls.update();

@@ -3,31 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>근골격계 뷰어 — 골반/고관절/요추</title>
+  <title>전신 근골격계 뷰어</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; background: #000; overflow: hidden;
                  font: 13px system-ui, -apple-system, sans-serif; color: #ccc; }
     canvas { display: block; touch-action: none; }   /* 손가락 회전 시 화면 스크롤 방지 */
-    /* .row 의 display:flex 가 브라우저 기본 [hidden]{display:none} 를 이겨버린다 */
-    [hidden] { display: none !important; }
+    [hidden] { display: none !important; }           /* .row 의 display:flex 가 기본값을 이겨서 필요 */
 
     #status { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
               color: #888; text-align: center; }
 
-    /* 검색 */
     #search { position: fixed; top: 8px; left: 8px; width: 240px; max-width: calc(100% - 16px); }
     #q { width: 100%; height: 36px; padding: 0 10px; background: rgba(20,20,20,.9);
          color: #eee; border: 1px solid #444; border-radius: 4px; font-size: 14px; }
-    #hits { margin-top: 4px; max-height: 44vh; overflow-y: auto;
+    #hits { margin-top: 4px; max-height: 40vh; overflow-y: auto;
             background: rgba(20,20,20,.95); border-radius: 4px; }
     #hits div { padding: 9px 10px; border-bottom: 1px solid #2a2a2a; }
     #hits div:last-child { border-bottom: 0; }
     #hits .sub { color: #777; font-size: 11px; }
 
-    /* 정보 패널 */
     #info { position: fixed; top: 8px; right: 8px; width: 270px; max-width: calc(100% - 16px);
-            max-height: 66vh; overflow-y: auto; padding: 12px;
+            max-height: 62vh; overflow-y: auto; padding: 12px;
             background: rgba(20,20,20,.95); border: 1px solid #444; border-radius: 4px; }
     #info h2 { font-size: 16px; color: #fff; margin-bottom: 2px; }
     #info .latin { color: #888; font-style: italic; font-size: 12px; margin-bottom: 8px; }
@@ -38,19 +35,19 @@
     #info .close { position: absolute; top: 8px; right: 10px; color: #888;
                    background: none; border: 0; font-size: 20px; }
 
-    /* 조작부 */
     #panel { position: fixed; left: 0; right: 0; bottom: 22px;
-             padding: 10px 14px; background: rgba(0,0,0,.72); }
-    .row { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
-    .row > label { width: 40px; flex: none; color: #999; }
-    .row > output { width: 96px; flex: none; text-align: right; color: #eee; }
-    input[type=range] { flex: 1; height: 34px; accent-color: #c85; }
-    .btns { display: flex; gap: 6px; flex: 1; }
-    .btns button, #flip { height: 34px; background: #222; color: #aaa;
-                          border: 1px solid #444; border-radius: 4px; font-size: 13px; }
-    .btns button { flex: 1; }
-    #flip { width: 64px; flex: none; }
+             padding: 8px 12px; background: rgba(0,0,0,.75); }
+    .row { display: flex; align-items: center; gap: 8px; margin: 5px 0; }
+    .row > label { width: 34px; flex: none; color: #999; font-size: 12px; }
+    .row > output { width: 92px; flex: none; text-align: right; color: #eee; font-size: 12px; }
+    input[type=range] { flex: 1; height: 30px; accent-color: #c85; }
+    .btns { display: flex; gap: 5px; flex: 1; flex-wrap: wrap; }
+    .btns button, #flip { min-height: 32px; padding: 0 8px; background: #222; color: #aaa;
+                          border: 1px solid #444; border-radius: 4px; font-size: 12px; }
+    .btns button { flex: 1; min-width: 52px; }
+    #flip { width: 58px; flex: none; }
     .btns button[aria-pressed=true] { background: #c85; color: #111; border-color: #c85; }
+    .btns button.loading { background: #444; color: #888; }
 
     #credit { position: fixed; bottom: 0; left: 0; right: 0; padding: 4px 10px;
               background: rgba(0,0,0,.85); color: #666; font-size: 10px; text-align: center; }
@@ -61,7 +58,7 @@
   <div id="status">불러오는 중…</div>
 
   <div id="search" hidden>
-    <input id="q" type="search" placeholder="근육 이름 (예: 이상근, glut)" autocomplete="off">
+    <input id="q" type="search" placeholder="이름 검색 (한글·영어·라틴어)" autocomplete="off">
     <div id="hits" hidden></div>
   </div>
 
@@ -74,13 +71,32 @@
 
   <div id="panel" hidden>
     <div class="row">
+      <label>부위</label>
+      <div class="btns" id="regions">
+        <button data-r="trunk">몸통</button>
+        <button data-r="lower">하지</button>
+        <button data-r="upper">상지</button>
+        <button data-r="head">머리·목</button>
+      </div>
+    </div>
+    <div class="row">
+      <label>계통</label>
+      <div class="btns" id="systems">
+        <button data-s="뼈" aria-pressed="true">뼈</button>
+        <button data-s="근육" aria-pressed="true">근육</button>
+        <button data-s="관절·인대" aria-pressed="true">인대</button>
+        <button data-s="신경">신경</button>
+        <button data-s="부착부">부착부</button>
+      </div>
+    </div>
+    <div class="row">
       <label for="layer">층</label>
       <input id="layer" type="range" min="0" max="3" step="1" value="3">
       <output id="layerOut"></output>
     </div>
     <div class="row">
       <label>단면</label>
-      <div class="btns">
+      <div class="btns" id="axes">
         <button data-axis="off" aria-pressed="true">끄기</button>
         <button data-axis="y">가로</button>
         <button data-axis="x">세로</button>
@@ -95,13 +111,12 @@
     </div>
   </div>
 
-  <!-- 출처 표기 의무. 지우지 말 것. 뼈·근육은 BodyParts3D, 인대·근막은 Z-Anatomy에서 왔다. -->
+  <!-- 출처 표기 의무. 지우지 말 것. -->
   <div id="credit">
-    BodyParts3D, &copy; The Database Center for Life Science —
-    <a href="https://creativecommons.org/licenses/by-sa/2.1/jp/" target="_blank" rel="noopener">CC BY-SA 2.1 Japan</a>
-    &nbsp;·&nbsp;
-    인대·근막: <a href="https://z-anatomy.com" target="_blank" rel="noopener">Z-Anatomy</a> —
+    <a href="https://z-anatomy.com" target="_blank" rel="noopener">Z-Anatomy</a> —
     <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>
+    &nbsp;·&nbsp; 원 자료 BodyParts3D, &copy; The Database Center for Life Science —
+    <a href="https://creativecommons.org/licenses/by-sa/2.1/jp/" target="_blank" rel="noopener">CC BY-SA 2.1 Japan</a>
   </div>
 
   <script type="module" src="/main.js"></script>
