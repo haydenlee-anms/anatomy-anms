@@ -11,6 +11,7 @@
 // 표에 있는 것만 채우고, 없으면 null 로 두고 뷰어가 영문·라틴명을 보여준다.
 import fs from 'node:fs';
 import path from 'node:path';
+import { compose } from './ko-compose.mjs';
 
 const IN = process.argv[2] || '/workspace/za_full';
 const OUT = process.argv[3] || 'public/structures.json';
@@ -43,7 +44,10 @@ function parseName(raw) {
   return { base: m[1], side, kind };
 }
 // 한글명 표는 BodyParts3D 이름 기준이라 " muscle" 이 안 붙어 있다
-const koKey = (base) => base.toLowerCase().replace(/\s+muscle$/, '').trim();
+// Z-Anatomy는 변이 구조를 (Adductor minimus) 처럼 괄호로 감싸고,
+// 뒤에 (Medial meniscus) 같은 한정어를 붙이기도 한다. 조회할 때는 벗겨낸다.
+const stripParens = (s) => s.replace(/^\((.*)\)$/, '$1').replace(/\s*\([^)]*\)\s*$/, '').trim();
+const koKey = (base) => stripParens(base).toLowerCase().replace(/\s+muscle$/, '').trim();
 
 const SYS_DEPTH = { '뼈': 0, '부착부': 0, '관절·인대': 1, '신경': 1, '근육': 2 };
 
@@ -55,7 +59,11 @@ for (const f of fs.readdirSync(IN).filter(x => x.endsWith('.json'))) {
     const { base, side, kind } = parseName(s.name);
     const key = base.toLowerCase();
     const la = ta2.get(key) || ta2.get(key + ' muscle') || null;
-    const ko = KO[koKey(base)] || null;
+    // 사전(사람이 확인한 것)이 먼저, 없으면 규칙 조합
+    const dict = KO[koKey(base)] || null;
+    const rule = dict ? null : compose(stripParens(base));
+    const ko = dict || rule?.ko || null;
+    const koHow = dict ? '추정(사람이 확인함)' : rule ? `추정(${rule.how} 조합)` : '없음';
     const suffix = [kind, side].filter(Boolean).join(' ');
 
     out.push({
@@ -75,7 +83,7 @@ for (const f of fs.readdirSync(IN).filter(x => x.endsWith('.json'))) {
         종류: '원본(Z-Anatomy 계통 분류)',
         부위: '원본(Z-Anatomy 부위 분류)',
         좌우: side ? '원본(이름 접미사)' : '해당없음',
-        한글명: ko ? '추정(사람이 확인함)' : '없음',
+        한글명: koHow,
         depth: '추정(계통 기준 일괄 배정)',
       },
     });
