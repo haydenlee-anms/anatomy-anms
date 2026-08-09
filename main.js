@@ -55,9 +55,15 @@ const onSystems = new Set(['뼈', '근육', '관절·인대']);
 let selected = null;
 
 const loader = new GLTFLoader();
-let attachments = {};   // 이는 곳 / 닿는 곳 (사람이 쓴 것. 미검증)
+let attachments = {};   // 이는 곳 / 닿는 곳 (사람이 쓴 것. 미검증). 아래 원문이 없을 때만 쓴다
+let descs = {};         // Z-Anatomy 수록 영문 설명. 출처가 있는 자료
 let sites = [];         // 내가 정의한 부위
 let obs = [];           // 날짜 붙은 관찰 기록
+
+// 설명은 1.5MB 라 첫 화면을 늦추면 안 된다. 따로 받아오고, 오면 열린 패널만 다시 그린다.
+fetch(BASE + 'descriptions.json').then(r => r.json())
+  .then(d => { descs = d; if (selected) renderInfo(selected); })
+  .catch(() => {});
 
 Promise.all([
   fetch(BASE + 'structures.json').then(r => r.json()),
@@ -255,7 +261,18 @@ function select(part) {
   selected = part;
   if (!part) { $('info').hidden = true; return; }
   part.mesh.material = MAT.pick;
+  renderInfo(part);
+  applyVisibility();   // 선택한 근육의 부착부를 같이 켜준다
+}
 
+// 원문 문장 목록. 요약하지 않고 그대로 보여준다.
+function quote(title, list) {
+  if (!list?.length) return '';
+  return `<dt>${title} <span class="src">원문 그대로</span></dt>
+          <dd class="quote">${list.map(t => `<p>${esc(t)}</p>`).join('')}</dd>`;
+}
+
+function renderInfo(part) {
   const s = part.info;
   $('iName').textContent = label(s, part.mesh.userData.id);
   $('iLatin').textContent = s?.라틴명 || '';
@@ -268,16 +285,38 @@ function select(part) {
   add('좌우', esc(s?.좌우));
   add('mesh', `<code>${esc(part.mesh.userData.id)}</code>`);
 
-  // 이는 곳 / 닿는 곳 — 골반·고관절·요추 것만 채워져 있다
-  // Z-Anatomy는 'X muscle' 로 부르는데 이는곳/닿는곳 표는 그냥 'X' 로 되어 있다
-  const a = attachments[(s?.영문명 || '').toLowerCase().replace(/\s+muscle$/, '')];
-  let html = rows.join('');
-  if (a) {
-    html = `<dt>이는 곳</dt><dd>${esc(a.이는곳)}</dd><dt>닿는 곳</dt><dd>${esc(a.닿는곳)}</dd>`
-         + (a.비고 ? `<dt>비고</dt><dd>${esc(a.비고)}</dd>` : '') + html
-         + `<div class="warn">⚠ <b>미검증</b> — 이는 곳/닿는 곳은 3D 데이터에 없는 정보라
-            Claude가 작성했고 문헌 대조를 거치지 않았습니다.</div>`;
+  let html = '';
+  const d = descs[s?.영문명];
+  if (d) {
+    // 출처 있는 자료. 위키백과 글을 Z-Anatomy 가 파일 안에 넣어둔 것이다.
+    html += quote('이는 곳', d.이는곳) + quote('닿는 곳', d.닿는곳) + quote('신경지배', d.신경지배);
+    if (d.설명) html += `<dt>설명</dt><dd class="en">${esc(d.설명)}</dd>`;
+    const secs = Object.entries(d.절 || {});
+    if (secs.length) {
+      html += `<details><summary>원문 더 보기 (${secs.map(([k]) => k).join(' · ')})</summary>`
+            + secs.map(([k, v]) => `<h3>${esc(k)}</h3><p>${esc(v).replace(/\n/g, '<br>')}</p>`).join('')
+            + `</details>`;
+    }
+    html += `<div class="warn ok">출처: 위키백과 영문판 → Z-Anatomy 수록분 (CC BY-SA).
+             ${d.원문제목 ? `이 구조는 <b>${esc(d.원문제목)}</b> 문서에 묶여 있어,
+             그 안에서 이 구조 이름이 나온 문장만 골랐습니다.` : ''}
+             번역하지 않고 원문 그대로 둡니다. 옮기다 뜻이 바뀌는 걸 막기 위해서입니다.</div>`;
+    if (!d.이는곳 && !d.닿는곳 && s?.종류 === '근육') {
+      html += `<div class="warn">이 근육은 원문에 이는 곳·닿는 곳이 문장으로 안 적혀 있어 비웠습니다.
+               지어내지 않습니다.</div>`;
+    }
+  } else {
+    // 원문이 없을 때만 예전에 손으로 적어둔 표를 쓴다
+    const a = attachments[(s?.영문명 || '').toLowerCase().replace(/\s+muscle$/, '')];
+    if (a) {
+      html += `<dt>이는 곳</dt><dd>${esc(a.이는곳)}</dd><dt>닿는 곳</dt><dd>${esc(a.닿는곳)}</dd>`
+            + (a.비고 ? `<dt>비고</dt><dd>${esc(a.비고)}</dd>` : '')
+            + `<div class="warn">⚠ <b>미검증</b> — 원문 설명이 없는 구조라, Claude가 쓴 걸 그대로 두었습니다.
+               문헌 대조를 거치지 않았습니다.</div>`;
+    }
   }
+  html += rows.join('');
+
   if (s && !s.한글명) {
     html += `<div class="warn">한글명이 아직 없습니다. 전신으로 넓히면서 구조가 2천 개대가 되어,
              사람이 확인한 것만 한글명을 넣고 나머지는 비워뒀습니다. 지어내지 않습니다.</div>`;
@@ -293,7 +332,6 @@ function select(part) {
   $('soloBtn').textContent = (soloIds && soloIds.has(part.mesh.userData.id)) ? '전체로 돌아가기' : '이것만 보기';
   $('iBody').innerHTML = html;
   $('info').hidden = false;
-  applyVisibility();   // 선택한 근육의 부착부를 같이 켜준다
 }
 
 // 이 구조를 가리키는 site 를 찾아 관찰 기록을 날짜 역순으로 보여준다. 쓰기 기능은 없다.
