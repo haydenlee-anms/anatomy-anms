@@ -14,7 +14,8 @@
     #status { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
               color: #888; text-align: center; }
 
-    #search { position: fixed; top: 8px; left: 8px; width: 240px; max-width: calc(100% - 16px); }
+    #search { position: fixed; top: 8px; left: 8px; width: 240px; max-width: calc(100% - 16px);
+              z-index: 2; }   /* 검색 결과가 아래 목록에 가리지 않게 */
     #q { width: 100%; height: 36px; padding: 0 10px; background: rgba(20,20,20,.9);
          color: #eee; border: 1px solid #444; border-radius: 4px; font-size: 14px; }
     #hits { margin-top: 4px; max-height: 40vh; overflow-y: auto;
@@ -22,6 +23,23 @@
     #hits div { padding: 9px 10px; border-bottom: 1px solid #2a2a2a; }
     #hits div:last-child { border-bottom: 0; }
     #hits .sub { color: #777; font-size: 11px; }
+
+    /* 구조를 하나씩 켜고 끄는 목록. 파묻힌 뼈는 화면에서 못 누르니까 여기서 누른다 */
+    #list { position: fixed; top: 52px; left: 8px; width: 240px; max-width: calc(100% - 16px);
+            max-height: 56vh; overflow-y: auto; background: rgba(20,20,20,.95);
+            border: 1px solid #444; border-radius: 4px; }
+    #list .head { position: sticky; top: 0; padding: 7px 10px; background: #1b1b1b;
+                  border-bottom: 1px solid #333; color: #888; font-size: 11px; }
+    #list .item { display: flex; align-items: center; gap: 8px; padding: 0 8px;
+                  border-bottom: 1px solid #262626; }
+    #list .item:last-child { border-bottom: 0; }
+    #list .eye { width: 30px; height: 34px; flex: none; background: none; border: 0;
+                 color: #6a9; font-size: 15px; }
+    #list .item.off .eye { color: #555; }
+    #list .item.off .nm { color: #666; text-decoration: line-through; }
+    #list .nm { flex: 1; padding: 9px 0; color: #ddd; font-size: 12px;
+                overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #list .item.sel { background: #3a2f14; }
 
     #info { position: fixed; top: 8px; right: 8px; width: 270px; max-width: calc(100% - 16px);
             max-height: 62vh; overflow-y: auto; padding: 12px;
@@ -58,6 +76,7 @@
     #flip { width: 58px; flex: none; }
     .btns button[aria-pressed=true] { background: #c85; color: #111; border-color: #c85; }
     .btns button.loading { background: #444; color: #888; }
+    .btns button:disabled { color: #555; border-color: #2e2e2e; }
 
     #credit { position: fixed; bottom: 0; left: 0; right: 0; padding: 4px 10px;
               background: rgba(0,0,0,.85); color: #666; font-size: 10px; text-align: center; }
@@ -71,6 +90,8 @@
     <input id="q" type="search" placeholder="이름 검색 (한글·영어·라틴어)" autocomplete="off">
     <div id="hits" hidden></div>
   </div>
+
+  <div id="list" hidden></div>
 
   <div id="info" hidden>
     <button class="close" id="infoClose" aria-label="닫기">×</button>
@@ -108,9 +129,10 @@
       <input id="layer" type="range" min="0" max="3" step="1" value="3">
       <output id="layerOut"></output>
     </div>
-    <div class="row" id="peelRow" hidden>
-      <label>벗김</label>
+    <div class="row">
+      <label>목록</label>
       <div class="btns">
+        <button id="listBtn">하나씩 켜고 끄기</button>
         <button id="undoPeel">마지막 하나 되돌리기</button>
         <button id="resetPeel">전부 되돌리기</button>
       </div>

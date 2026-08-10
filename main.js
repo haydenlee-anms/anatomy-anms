@@ -134,10 +134,71 @@ const peeled = [];        // 벗겨낸 순서대로. 되돌리기에 쓴다
 let soloIds = null;       // null 이면 평소대로, Set 이면 그것만 보임
 
 function updatePeelRow() {
-  const n = peeled.length + (soloIds ? 1 : 0);
-  $('peelRow').hidden = n === 0;
-  $('peelOut').textContent = soloIds ? '이것만' : `${peeled.length}개`;
+  $('undoPeel').disabled = peeled.length === 0;
+  $('resetPeel').disabled = peeled.length === 0 && !soloIds;
+  $('peelOut').textContent = soloIds ? '이것만' : peeled.length ? `${peeled.length}개 숨김` : '';
 }
+
+// --- 하나씩 켜고 끄는 목록 ----------------------------------------------
+// 두개골처럼 안쪽에 파묻힌 뼈는 화면에서 누를 수가 없다. 그래서 목록에서 누른다.
+// 목록에 나오는 것 = 지금 켠 부위 + 켠 계통. 숨긴 것도 남겨둬야 되돌릴 수 있다.
+function listedParts() {
+  return parts
+    .filter(p => onRegions.has(p.region) && onSystems.has(p.info?.종류))
+    .sort((a, b) => label(a.info, a.mesh.userData.id)
+      .localeCompare(label(b.info, b.mesh.userData.id), 'ko'));
+}
+
+// 층 슬라이더를 끌면 applyVisibility가 연달아 불린다.
+// 목록이 500줄일 수 있어서 한 프레임에 한 번만 다시 그린다.
+let listPending = false;
+function renderList() {
+  if ($('list').hidden || listPending) return;
+  listPending = true;
+  requestAnimationFrame(() => { listPending = false; drawList(); });
+}
+
+function drawList() {
+  const box = $('list');
+  if (box.hidden) return;
+  const keepScroll = box.scrollTop;      // 통째로 다시 그리므로 보던 자리를 기억해둔다
+  const items = listedParts();
+  const peelSet = new Set(peeled);
+  box.innerHTML = `<div class="head">${items.length}개 · 눈 아이콘으로 하나씩 끄기</div>`
+    + items.map((p, i) => {
+      const id = p.mesh.userData.id;
+      const off = peelSet.has(id) || (soloIds && !soloIds.has(id));
+      return `<div class="item ${off ? 'off' : ''} ${p === selected ? 'sel' : ''}" data-i="${i}">
+                <button class="eye" aria-label="켜고 끄기">${off ? '○' : '●'}</button>
+                <div class="nm">${esc(label(p.info, id))}</div>
+              </div>`;
+    }).join('');
+  for (const el of box.querySelectorAll('.item')) {
+    const p = items[+el.dataset.i], id = p.mesh.userData.id;
+    el.querySelector('.eye').addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (soloIds) soloIds = null;             // 목록으로 끄기 시작하면 '이것만'은 푼다
+      const k = peeled.indexOf(id);
+      if (k >= 0) peeled.splice(k, 1); else peeled.push(id);
+      applyVisibility();
+    });
+    el.querySelector('.nm').addEventListener('click', () => { select(p); focusOn(p); });
+  }
+  box.scrollTop = keepScroll;
+}
+
+function focusOn(p) {
+  const c = new THREE.Box3().setFromObject(p.mesh).getCenter(new THREE.Vector3());
+  controls.target.copy(c);
+  controls.update();
+}
+
+$('listBtn').addEventListener('click', () => {
+  const box = $('list');
+  box.hidden = !box.hidden;
+  $('listBtn').setAttribute('aria-pressed', String(!box.hidden));
+  drawList();
+});
 
 // --- 보이기 규칙 --------------------------------------------------------
 // 부위가 켜져 있고, 계통이 켜져 있고, 층 슬라이더보다 얕아야 보인다.
@@ -164,6 +225,7 @@ function applyVisibility() {
   }
   $('layerOut').textContent = LAYER_LABEL[v];
   updatePeelRow();
+  renderList();
 }
 $('layer').addEventListener('input', applyVisibility);
 
@@ -391,12 +453,7 @@ $('q').addEventListener('input', () => {
       $('layer').value = String(Math.max(+$('layer').value, s.depth));
       applyVisibility();
       const p = parts.find(x => x.mesh.userData.id === s.meshName);
-      if (p) {
-        select(p);
-        const c = new THREE.Box3().setFromObject(p.mesh).getCenter(new THREE.Vector3());
-        controls.target.copy(c);
-        controls.update();
-      }
+      if (p) { select(p); focusOn(p); }
       hits.hidden = true; $('q').blur();
     });
   });

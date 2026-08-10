@@ -8,13 +8,19 @@
 #   .bin   좌표(float32) 전부 이어붙인 뒤, 인덱스(uint32) 전부 이어붙임
 # 법선은 넣지 않는다. 용량의 33%를 차지하는데 브라우저가 로드할 때 계산하면 된다.
 #
-# 실행: blender --background Startup.blend --python export-all.py -- <출력폴더> <감면비율>
+# 실행: blender --background Startup.blend --python export-all.py -- <출력폴더> <감면비율> [부위]
+#   부위를 주면 그 부위만 다시 뽑는다 (두개골만 손볼 때 전체를 다시 돌리지 않으려고)
 import bpy, sys, os, re, json, struct, mathutils
 
 argv = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
 OUT = argv[0] if argv else '/workspace/za_full'
 RATIO = float(argv[1]) if len(argv) > 1 else 0.4
+ONLY = argv[2] if len(argv) > 2 else None
 MIN_TRIS = 150          # 이보다 작으면 감면하지 않는다
+
+# 부위·계통별로 감면을 덜 하는 곳. 사용자가 자세히 보겠다고 한 데만 예외를 둔다.
+# 두개골은 봉합선·안와·측두골처럼 잔 구조가 형태의 전부라, 15%로 줄이면 뭉개진다.
+FINE = {('head', '뼈'): 1.0}
 os.makedirs(OUT, exist_ok=True)
 
 SYSTEMS = {
@@ -115,16 +121,18 @@ for o in bpy.data.objects:
 print('BUCKETS ' + json.dumps({k: len(v) for k, v in buckets.items()}))
 
 for grp, items in buckets.items():
+    if ONLY and grp != ONLY: continue
     meta, pos_parts, idx_parts = [], [], []
     v_off = i_off = 0
     for o, sysname, region in items:
-        # 감면: 원본 삼각형이 MIN_TRIS를 넘을 때만
+        # 감면: 원본 삼각형이 MIN_TRIS를 넘을 때만. FINE에 있으면 그 비율을 쓴다
         mod = None
+        ratio = FINE.get((grp, sysname), RATIO)
         ntri = sum(len(p.vertices) - 2 for p in o.data.polygons)
-        if ntri > MIN_TRIS:
+        if ntri > MIN_TRIS and ratio < 1.0:
             mod = o.modifiers.new('__dec', 'DECIMATE')
             mod.decimate_type = 'COLLAPSE'
-            mod.ratio = max(RATIO, MIN_TRIS / ntri)
+            mod.ratio = max(ratio, MIN_TRIS / ntri)
         ev = o.evaluated_get(bpy.context.evaluated_depsgraph_get())
         me = ev.to_mesh()
         me.calc_loop_triangles()
