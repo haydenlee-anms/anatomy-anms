@@ -48,10 +48,13 @@ for (const jsonFile of fs.readdirSync(IN).filter(f => f.endsWith('.json'))) {
     const half = [0, 1, 2].map(c => Math.max((mx[c] - mn[c]) / 2, 1e-4));
 
     const posBuf = Buffer.alloc(n * 8);         // SHORT x3 + 2바이트 정렬 패딩
+    const qmn = [32767, 32767, 32767], qmx = [-32767, -32767, -32767];
     for (let i = 0; i < n; i++) {
       for (let c = 0; c < 3; c++) {
         const t = (axis(s.v0 + i, c) - center[c]) / half[c];   // -1..1
-        posBuf.writeInt16LE(Math.max(-32767, Math.min(32767, Math.round(t * 32767))), i * 8 + c * 2);
+        const q = Math.max(-32767, Math.min(32767, Math.round(t * 32767)));
+        if (q < qmn[c]) qmn[c] = q; if (q > qmx[c]) qmx[c] = q;
+        posBuf.writeInt16LE(q, i * 8 + c * 2);
       }
     }
 
@@ -66,8 +69,11 @@ for (const jsonFile of fs.readdirSync(IN).filter(f => f.endsWith('.json'))) {
     bufferViews[pv].byteStride = 8;
     const iv = pushView(idxBuf, 34963);
 
+    // min/max 는 glTF 규격상 "정규화하기 전의 원래 성분값"이다. 즉 int16 그대로 적어야 한다.
+    // 여기에 -1..1 을 적으면 로더가 그걸 또 32767로 나눠서 경계상자가 3만분의 1로 쪼그라든다.
+    // 그러면 화면은 멀쩡한데 클릭(광선 검사)이 아무것도 못 맞힌다. 실제로 이 버그가 있었다.
     accessors.push({ bufferView: pv, componentType: 5122, normalized: true, count: n, type: 'VEC3',
-                     min: [-1, -1, -1], max: [1, 1, 1] });
+                     min: qmn, max: qmx });
     const posAcc = accessors.length - 1;
     accessors.push({ bufferView: iv, componentType: small ? 5123 : 5125, count: s.ic, type: 'SCALAR' });
     const idxAcc = accessors.length - 1;

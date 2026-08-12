@@ -33,8 +33,12 @@
     #list .item { display: flex; align-items: center; gap: 8px; padding: 0 8px;
                   border-bottom: 1px solid #262626; }
     #list .item:last-child { border-bottom: 0; }
-    #list .eye { width: 30px; height: 34px; flex: none; background: none; border: 0;
-                 color: #6a9; font-size: 15px; }
+    #list .eye, #list .fade { width: 28px; height: 34px; flex: none; background: none;
+                              border: 0; font-size: 15px; }
+    #list .eye { color: #6a9; }
+    #list .fade { color: #4a5a6a; }
+    #list .item.gh .fade { color: #7fb0e0; }
+    #list .item.gh .nm { color: #8fa6b8; }
     #list .item.off .eye { color: #555; }
     #list .item.off .nm { color: #666; text-decoration: line-through; }
     #list .nm { flex: 1; padding: 9px 0; color: #ddd; font-size: 12px;
@@ -78,6 +82,15 @@
     .btns button.loading { background: #444; color: #888; }
     .btns button:disabled { color: #555; border-color: #2e2e2e; }
 
+    /* 마우스를 올렸을 때 뜨는 이름표. 커서를 따라다니므로 클릭을 먹으면 안 된다 */
+    #tip { position: fixed; z-index: 5; pointer-events: none; max-width: 290px;
+           padding: 7px 9px; background: rgba(14,14,14,.96); border: 1px solid #555;
+           border-radius: 4px; }
+    #tip b { color: #fff; font-size: 13px; }
+    #tip .la { color: #999; font-style: italic; font-size: 11px; }
+    #tip .sy { color: #c85; font-size: 11px; margin-top: 2px; }
+    #tip .de { color: #aaa; font-size: 11px; line-height: 1.45; margin-top: 4px; }
+
     #credit { position: fixed; bottom: 0; left: 0; right: 0; padding: 4px 10px;
               background: rgba(0,0,0,.85); color: #666; font-size: 10px; text-align: center; }
     #credit a { color: #888; }
@@ -92,6 +105,7 @@
   </div>
 
   <div id="list" hidden></div>
+  <div id="tip" hidden></div>
 
   <div id="info" hidden>
     <button class="close" id="infoClose" aria-label="닫기">×</button>
@@ -99,6 +113,7 @@
     <div class="latin" id="iLatin"></div>
     <div class="btns" style="margin:8px 0">
       <button id="soloBtn">이것만 보기</button>
+      <button id="ghostBtn">흐리게</button>
       <button id="peelBtn">벗겨내기</button>
     </div>
     <dl id="iBody"></dl>

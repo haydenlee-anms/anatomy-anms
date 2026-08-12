@@ -53,6 +53,7 @@ const loading = new Set();
 const onRegions = new Set(['trunk']);
 const onSystems = new Set(['뼈', '근육', '관절·인대']);
 let selected = null;
+const pickable = [];             // 지금 광선에 잡히는 메쉬. 매 프레임 새로 만들지 않으려고 들고 있는다
 
 const loader = new GLTFLoader();
 let attachments = {};   // 이는 곳 / 닿는 곳 (사람이 쓴 것. 미검증). 아래 원문이 없을 때만 쓴다
@@ -133,10 +134,30 @@ async function ensureRegion(r) {
 const peeled = [];        // 벗겨낸 순서대로. 되돌리기에 쓴다
 let soloIds = null;       // null 이면 평소대로, Set 이면 그것만 보임
 
+// 반투명: 숨기는 것과 다르다. 겉 구조를 흐리게 남겨 위치 감각을 잃지 않게 하면서
+// 속을 들여다본다. 반투명한 것은 클릭이 통과해서, 흐려놓고 바로 아래 것을 집을 수 있다.
+const ghosted = new Set();
+const ghostCache = new Map();
+function ghostOf(base) {
+  let g = ghostCache.get(base);
+  if (!g) {
+    g = base.clone();
+    g.transparent = true;
+    g.opacity = 0.22;
+    g.depthWrite = false;   // 이게 없으면 뒤에 있는 게 가려진다
+    ghostCache.set(base, g);
+  }
+  return g;
+}
+
 function updatePeelRow() {
   $('undoPeel').disabled = peeled.length === 0;
-  $('resetPeel').disabled = peeled.length === 0 && !soloIds;
-  $('peelOut').textContent = soloIds ? '이것만' : peeled.length ? `${peeled.length}개 숨김` : '';
+  $('resetPeel').disabled = peeled.length === 0 && !soloIds && ghosted.size === 0;
+  const bits = [];
+  if (soloIds) bits.push('이것만');
+  if (peeled.length) bits.push(`${peeled.length}개 숨김`);
+  if (ghosted.size) bits.push(`${ghosted.size}개 흐림`);
+  $('peelOut').textContent = bits.join(' · ');
 }
 
 // --- 하나씩 켜고 끄는 목록 ----------------------------------------------
@@ -164,12 +185,14 @@ function drawList() {
   const keepScroll = box.scrollTop;      // 통째로 다시 그리므로 보던 자리를 기억해둔다
   const items = listedParts();
   const peelSet = new Set(peeled);
-  box.innerHTML = `<div class="head">${items.length}개 · 눈 아이콘으로 하나씩 끄기</div>`
+  box.innerHTML = `<div class="head">${items.length}개 · ● 끄기 / ◐ 흐리게</div>`
     + items.map((p, i) => {
       const id = p.mesh.userData.id;
       const off = peelSet.has(id) || (soloIds && !soloIds.has(id));
-      return `<div class="item ${off ? 'off' : ''} ${p === selected ? 'sel' : ''}" data-i="${i}">
+      const gh = ghosted.has(id);
+      return `<div class="item ${off ? 'off' : ''} ${gh ? 'gh' : ''} ${p === selected ? 'sel' : ''}" data-i="${i}">
                 <button class="eye" aria-label="켜고 끄기">${off ? '○' : '●'}</button>
+                <button class="fade" aria-label="흐리게">◐</button>
                 <div class="nm">${esc(label(p.info, id))}</div>
               </div>`;
     }).join('');
@@ -182,6 +205,8 @@ function drawList() {
       if (k >= 0) peeled.splice(k, 1); else peeled.push(id);
       applyVisibility();
     });
+    // 반투명한 것은 화면에서 클릭이 통과하므로, 되돌릴 자리가 여기밖에 없다
+    el.querySelector('.fade').addEventListener('click', (e) => { e.stopPropagation(); toggleGhost(id); });
     el.querySelector('.nm').addEventListener('click', () => { select(p); focusOn(p); });
   }
   box.scrollTop = keepScroll;
@@ -208,6 +233,7 @@ function applyVisibility() {
   const v = +$('layer').value;
   const peelSet = new Set(peeled);
   const linked = linkedAttachmentIds();
+  pickable.length = 0;
   for (const p of parts) {
     const id = p.mesh.userData.id;
     let vis;
@@ -216,12 +242,14 @@ function applyVisibility() {
     else if (linked.has(id)) vis = onRegions.has(p.region);
     else vis = onRegions.has(p.region) && onSystems.has(p.info?.종류) && (p.info?.depth ?? 2) <= v;
     p.mesh.visible = vis;
-    // 선택한 근육의 부착부는 이는 곳/닿는 곳을 색으로 구분해준다
-    if (p !== selected) {
-      p.mesh.material = linked.has(id)
-        ? (p.info?.부착구분 === '이는곳' ? MAT.origin : MAT.insertion)
-        : matOf(p.info);
-    }
+    // 고른 것은 노랑, 고른 근육의 부착부는 이는 곳/닿는 곳을 색으로 구분해준다
+    const base = p === selected ? MAT.pick
+      : linked.has(id) ? (p.info?.부착구분 === '이는곳' ? MAT.origin : MAT.insertion)
+      : matOf(p.info);
+    const ghost = ghosted.has(id);
+    p.mesh.material = ghost ? ghostOf(base) : base;
+    // 반투명한 것은 광선이 통과한다. 그래야 흐려놓고 그 아래를 바로 집을 수 있다
+    if (vis && !ghost) pickable.push(p.mesh);
   }
   $('layerOut').textContent = LAYER_LABEL[v];
   updatePeelRow();
@@ -242,11 +270,19 @@ function linkedAttachmentIds() {
 $('peelBtn').addEventListener('click', () => {
   if (!selected) return;
   peeled.push(selected.mesh.userData.id);
-  const next = selected;
   select(null);
-  applyVisibility();
-  void next;
 });
+// 반투명은 고른 채로 둔다. 흐려진 상태에서 설명을 계속 보면서 아래를 눌러야 하니까.
+$('ghostBtn').addEventListener('click', () => {
+  if (!selected) return;
+  toggleGhost(selected.mesh.userData.id);
+});
+function toggleGhost(id) {
+  if (ghosted.has(id)) ghosted.delete(id); else ghosted.add(id);
+  if (selected) $('ghostBtn').textContent =
+    ghosted.has(selected.mesh.userData.id) ? '흐림 풀기' : '흐리게';
+  applyVisibility();
+}
 $('soloBtn').addEventListener('click', () => {
   if (!selected) return;
   const id = selected.mesh.userData.id;
@@ -257,8 +293,9 @@ $('soloBtn').addEventListener('click', () => {
 });
 $('undoPeel').addEventListener('click', () => { peeled.pop(); applyVisibility(); });
 $('resetPeel').addEventListener('click', () => {
-  peeled.length = 0; soloIds = null;
+  peeled.length = 0; soloIds = null; ghosted.clear();
   $('soloBtn').textContent = '이것만 보기';
+  $('ghostBtn').textContent = '흐리게';
   applyVisibility();
 });
 
@@ -318,13 +355,11 @@ function label(info, meshName) {
   return info?.한글명 || info?.영문명 || meshName;
 }
 
+// 색칠은 전부 applyVisibility 가 한다. 여기서는 누가 선택됐는지만 정한다.
 function select(part) {
-  if (selected) selected.mesh.material = matOf(selected.info);
   selected = part;
-  if (!part) { $('info').hidden = true; return; }
-  part.mesh.material = MAT.pick;
-  renderInfo(part);
-  applyVisibility();   // 선택한 근육의 부착부를 같이 켜준다
+  if (part) renderInfo(part); else $('info').hidden = true;
+  applyVisibility();   // 색을 다시 칠하고, 선택한 근육의 부착부를 같이 켜준다
 }
 
 // 원문 문장 목록. 요약하지 않고 그대로 보여준다.
@@ -392,6 +427,7 @@ function renderInfo(part) {
     <span style="color:#4ad08a">초록색 = 닿는 곳</span></dd>`;
   html += notesHtml(part.mesh.userData.id);
   $('soloBtn').textContent = (soloIds && soloIds.has(part.mesh.userData.id)) ? '전체로 돌아가기' : '이것만 보기';
+  $('ghostBtn').textContent = ghosted.has(part.mesh.userData.id) ? '흐림 풀기' : '흐리게';
   $('iBody').innerHTML = html;
   $('info').hidden = false;
 }
@@ -417,15 +453,65 @@ $('infoClose').addEventListener('click', () => select(null));
 
 // --- 클릭으로 선택 ------------------------------------------------------
 const ray = new THREE.Raycaster();
+const ndc = new THREE.Vector2();
 let downAt = null;
-renderer.domElement.addEventListener('pointerdown', (e) => { downAt = { x: e.clientX, y: e.clientY }; });
+
+// 화면 좌표에서 광선을 쏴 맨 앞의 구조를 찾는다. 반투명한 것은 pickable에 없어서 통과한다.
+function pickAt(x, y) {
+  ndc.set((x / innerWidth) * 2 - 1, -(y / innerHeight) * 2 + 1);
+  ray.setFromCamera(ndc, camera);
+  const hit = ray.intersectObjects(pickable, false)[0];
+  return hit ? parts.find(p => p.mesh === hit.object) : null;
+}
+
+renderer.domElement.addEventListener('pointerdown', (e) => { downAt = { x: e.clientX, y: e.clientY }; hideTip(); });
 renderer.domElement.addEventListener('pointerup', (e) => {
   if (!downAt) return;
-  if (Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y) > 6) return;  // 끌었으면 회전이다
-  ray.setFromCamera(new THREE.Vector2((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1), camera);
-  const hit = ray.intersectObjects(parts.filter(p => p.mesh.visible).map(p => p.mesh), false)[0];
-  select(hit ? parts.find(p => p.mesh === hit.object) : null);
+  const dragged = Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y) > 6;
+  downAt = null;
+  if (dragged) return;                                   // 끌었으면 회전이다
+  const p = pickAt(e.clientX, e.clientY);
+  // 이미 고른 것을 또 누르면 흐려진다. 흐려지면 클릭이 통과하니 다음 누름은 그 아래가 잡힌다
+  if (p && p === selected) toggleGhost(p.mesh.userData.id);
+  else select(p);
 });
+
+// --- 마우스를 올리면 이름과 설명 ----------------------------------------
+// 터치에는 호버가 없다. 손가락으로는 눌러서 보는 게 맞으므로 마우스일 때만 뜬다.
+const tip = $('tip');
+let hoverAt = null, hoverPart = null;
+
+function hideTip() { hoverAt = null; hoverPart = null; tip.hidden = true; }
+
+renderer.domElement.addEventListener('pointermove', (e) => {
+  if (e.pointerType !== 'mouse' || downAt) { hideTip(); return; }
+  hoverAt = { x: e.clientX, y: e.clientY };
+});
+renderer.domElement.addEventListener('pointerleave', hideTip);
+
+// 광선 계산은 프레임당 한 번만. 매 pointermove마다 하면 구조 2천 개에서 버거워진다.
+function updateHover() {
+  if (!hoverAt) return;
+  const { x, y } = hoverAt;
+  hoverAt = null;
+  const p = pickAt(x, y);
+  if (!p) { hoverPart = null; tip.hidden = true; return; }
+  if (p !== hoverPart) {
+    hoverPart = p;
+    const s = p.info;
+    const d = descs[s?.영문명];
+    const one = (d?.설명 || '').split(/(?<=[.])\s/)[0];
+    tip.innerHTML = `<b>${esc(label(s, p.mesh.userData.id))}</b>`
+      + (s?.라틴명 ? `<div class="la">${esc(s.라틴명)}</div>` : '')
+      + (s ? `<div class="sy">${esc(s.종류)} · ${esc(REGION_LABEL[s.부위] || s.부위)}</div>` : '')
+      + (one ? `<div class="de">${esc(one.length > 140 ? one.slice(0, 140) + '…' : one)}</div>` : '');
+  }
+  tip.hidden = false;
+  // 화면 밖으로 나가지 않게 뒤집는다
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  tip.style.left = (x + 16 + w > innerWidth ? x - 16 - w : x + 16) + 'px';
+  tip.style.top = (y + 16 + h > innerHeight ? y - 16 - h : y + 16) + 'px';
+}
 
 // --- 검색 --------------------------------------------------------------
 // 아직 안 받아온 부위의 구조도 찾아준다. 고르면 그 부위를 받아온다.
@@ -466,9 +552,10 @@ addEventListener('resize', () => {
 });
 
 // 검증용. 브라우저 콘솔에서 내부 상태를 볼 수 있게 열어둔다
-window.__dbg = { parts, scene, camera, controls, byMesh: () => byMesh };
+window.__dbg = { parts, scene, camera, controls, pickable, pickAt, byMesh: () => byMesh };
 
 renderer.setAnimationLoop(() => {
   controls.update();
+  updateHover();
   renderer.render(scene, camera);
 });
