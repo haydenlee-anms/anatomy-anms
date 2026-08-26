@@ -67,8 +67,11 @@
     #info .close { position: absolute; top: 8px; right: 10px; color: #888;
                    background: none; border: 0; font-size: 20px; }
 
-    #panel { position: fixed; left: 0; right: 0; bottom: 22px;
-             padding: 8px 12px; background: rgba(0,0,0,.75); }
+    /* 조작부와 출처 표기를 한 덩어리로 붙여 아래에 고정한다.
+       출처 표기가 좁은 화면에서 두 줄로 접히는데, 조작부를 따로 띄워두면
+       그때 겹친다. 흐름에 그대로 쌓으면 높이가 변해도 안 겹친다. */
+    #bottom { position: fixed; left: 0; right: 0; bottom: 0; }
+    #panel { padding: 8px 12px; background: rgba(0,0,0,.75); }
     .row { display: flex; align-items: center; gap: 8px; margin: 5px 0; }
     .row > label { width: 34px; flex: none; color: #999; font-size: 12px; }
     .row > output { width: 92px; flex: none; text-align: right; color: #eee; font-size: 12px; }
@@ -91,8 +94,8 @@
     #tip .sy { color: #c85; font-size: 11px; margin-top: 2px; }
     #tip .de { color: #aaa; font-size: 11px; line-height: 1.45; margin-top: 4px; }
 
-    #credit { position: fixed; bottom: 0; left: 0; right: 0; padding: 4px 10px;
-              background: rgba(0,0,0,.85); color: #666; font-size: 10px; text-align: center; }
+    #credit { padding: 4px 10px; background: rgba(0,0,0,.85);
+              color: #666; font-size: 10px; text-align: center; line-height: 1.5; }
     #credit a { color: #888; }
   </style>
 </head>
@@ -119,6 +122,7 @@
     <dl id="iBody"></dl>
   </div>
 
+  <div id="bottom">
   <div id="panel" hidden>
     <div class="row">
       <label>부위</label>
@@ -170,12 +174,18 @@
     </div>
   </div>
 
-  <!-- 출처 표기 의무. 지우지 말 것. -->
+  <!-- 출처 표기 의무. 지우지 말 것.
+       CC BY-SA 는 출처·라이선스만이 아니라 "원본을 고쳤다는 사실"도 밝히라고 요구한다.
+       무엇을 어떻게 고쳤는지는 LICENSE 파일에 적어두고 여기서는 링크만 건다. -->
   <div id="credit">
-    <a href="https://z-anatomy.com" target="_blank" rel="noopener">Z-Anatomy</a> —
-    <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>
-    &nbsp;·&nbsp; 원 자료 BodyParts3D, &copy; The Database Center for Life Science —
-    <a href="https://creativecommons.org/licenses/by-sa/2.1/jp/" target="_blank" rel="noopener">CC BY-SA 2.1 Japan</a>
+    <a href="https://z-anatomy.com" target="_blank" rel="noopener">Z-Anatomy</a>
+    (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>)
+    &nbsp;·&nbsp; 원자료 BodyParts3D &copy; DBCLS
+    (<a href="https://creativecommons.org/licenses/by-sa/2.1/jp/" target="_blank" rel="noopener">CC BY-SA 2.1 JP</a>)
+    &nbsp;·&nbsp; 설명 <a href="https://en.wikipedia.org" target="_blank" rel="noopener">위키백과</a>
+    &nbsp;·&nbsp; 원본을 가공함 &nbsp;·&nbsp;
+    <a href="https://github.com/haydenlee-anms/anatomy-anms/blob/HEAD/LICENSE" target="_blank" rel="noopener">라이선스 전문</a>
+  </div>
   </div>
 
   <script type="module" src="/main.js"></script>

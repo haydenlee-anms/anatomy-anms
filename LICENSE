@@ -1,0 +1,111 @@
+이 저장소의 라이선스
+====================
+
+라이선스가 다른 두 가지가 섞여 있습니다. A(코드)와 B(3D 모델·해부 데이터)를
+나누어 읽으십시오. 3D 모델과 해부 데이터는 남의 저작물에서 파생된 것이라
+라이선스를 우리가 고를 수 없습니다.
+
+
+===============================================================================
+A. 코드 — MIT License
+===============================================================================
+
+대상: index.html, main.js, vite.config.js, package.json,
+      tools/ 아래의 스크립트 전부
+
+Copyright (c) 2026 haydenlee-anms
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+===============================================================================
+B. 3D 모델과 해부 데이터 — CC BY-SA 4.0
+===============================================================================
+
+대상:
+  public/model/*.glb          3D 형상 (몸통·하지·상지·머리목)
+  public/structures.json      구조 목록, 계통·부위 분류, 이름
+  public/descriptions.json    구조 설명글
+  public/attachments.json     이는 곳·닿는 곳 (원문이 없는 구조용 보조 자료)
+  tools/ko-names.json         한글명 표
+
+이 파일들은 아래 원 저작물에서 파생되었습니다. 원 저작물이 동일조건변경허락
+(ShareAlike) 조건이므로, 파생물도 같은 조건으로 배포해야 합니다.
+즉 **이 라이선스는 우리가 고른 것이 아니라 물려받은 것이며, 다른 것으로
+바꿀 수 없습니다.**
+
+  Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+  전문   https://creativecommons.org/licenses/by-sa/4.0/legalcode
+  요약   https://creativecommons.org/licenses/by-sa/4.0/deed.ko
+
+
+원 저작물
+---------
+
+1) Z-Anatomy — https://z-anatomy.com   (CC BY-SA 4.0)
+   3D 형상, 구조 이름, 계통·부위 분류, 영문 설명글의 출처.
+
+2) BodyParts3D — © The Database Center for Life Science (DBCLS)
+   https://dbarchive.biosciencedbc.jp/en/bodyparts3d/desc.html
+   (CC BY-SA 2.1 Japan)
+   Z-Anatomy 형상의 원 자료.
+
+3) 영문 위키백과 기여자들 — https://en.wikipedia.org   (CC BY-SA)
+   public/descriptions.json 의 설명글은 Z-Anatomy 가 파일 안에 수록해 둔
+   위키백과 문서에서 문장을 그대로 발췌한 것입니다. 요약하거나 고쳐 쓰지
+   않았습니다.
+
+이 저장소는 Z-Anatomy 의 배포 조건을 따라 CC BY-SA 4.0 으로 배포하며,
+원 자료 BodyParts3D 의 CC BY-SA 2.1 Japan 표기도 함께 유지합니다.
+
+
+무엇을 바꾸었는가
+-----------------
+
+CC BY-SA 는 원본을 고쳤을 경우 그 사실을 밝히도록 요구합니다.
+이 저장소가 원본에 가한 변경은 다음과 같습니다.
+
+  · 폴리곤 감면 — 대부분의 구조를 QEM 모서리 접기로 15%까지 줄였습니다.
+    다만 머리 부위의 뼈는 감면하지 않고 원본 그대로 두었습니다.
+  · 좌표 양자화 — KHR_mesh_quantization (int16) 을 적용했습니다.
+    법선은 파일에 넣지 않고 불러올 때 계산합니다.
+  · 부위별 분할 — 몸통 / 하지 / 상지 / 머리·목 네 파일로 나누었습니다.
+  · 계통 선별 — 뼈, 근육, 관절·인대, 근육 부착부, 척수만 남기고
+    뇌·감각기관·내장 등은 제외했습니다.
+  · 좌표계 변환 — Blender 의 Z-up 을 glTF 의 Y-up 으로 눕혔고,
+    단위를 mm 에서 m 로 바꾸었습니다.
+  · 한글명 추가 — 사람이 확인한 것과 규칙으로 조합한 것이 섞여 있으며,
+    전부 "추정" 으로 표시했습니다. 라틴명은 Terminologia Anatomica 2 에서
+    이름으로 맞추었습니다.
+  · 설명글 발췌 — 원문에서 필요한 절만 남기고, 이는 곳·닿는 곳·신경지배
+    문장을 골라 뽑았습니다. 문장 자체는 고치지 않았습니다.
+
+변경 내역의 자세한 경위는 PROGRESS.md 에 세션별로 적혀 있습니다.
+
+
+===============================================================================
+C. 개인 기록 — 라이선스 없음
+===============================================================================
+
+  public/sites.json
+  public/observations.jsonl
+
+이 두 파일은 저장소 소유자의 개인 신체 기록을 담기 위한 자리입니다.
+현재 들어 있는 것은 형식을 보여주기 위한 예시(가짜) 자료이며,
+파일 안에 그렇게 표시해 두었습니다.
